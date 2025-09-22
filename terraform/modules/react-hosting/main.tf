@@ -19,10 +19,7 @@ module "serverless_react_app" {
   app_version = var.app_version
 
   # VPC Configuration
-  create_vpc_resources = var.use_existing_vpc
-  vpc_id               = var.use_existing_vpc ? var.vpc_id : null
-  alb_subnets          = var.use_existing_vpc ? var.public_subnet_ids : null
-  ecs_subnets          = var.use_existing_vpc ? var.private_subnet_ids : null
+  create_vpc_resources = var.use_existing_vpc ? false : true
 
   # Security Groups
   create_alb_security_group    = var.use_existing_vpc ? false : true
@@ -262,8 +259,6 @@ resource "aws_s3_bucket_policy" "react_static" {
 
 # Random string for unique bucket names
 resource "random_string" "bucket_suffix" {
-  count = var.hosting_type == "static" ? 1 : 0
-
   length  = 8
   special = false
   upper   = false
