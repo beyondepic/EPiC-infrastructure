@@ -136,6 +136,6 @@ output "monitoring_summary" {
     ]))
     lambda_functions_monitored = length(var.lambda_functions)
     applications_monitored     = length(var.applications)
-    log_groups_monitored      = length(var.log_group_names)
+    log_groups_monitored       = length(var.log_group_names)
   }
 }

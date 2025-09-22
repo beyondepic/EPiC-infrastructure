@@ -165,11 +165,11 @@ resource "aws_config_config_rule" "iam_password_policy" {
   input_parameters = jsonencode({
     RequireUppercaseCharacters = "true"
     RequireLowercaseCharacters = "true"
-    RequireSymbols            = "true"
-    RequireNumbers            = "true"
-    MinimumPasswordLength     = var.minimum_password_length
-    PasswordReusePrevention   = var.password_reuse_prevention
-    MaxPasswordAge           = var.max_password_age
+    RequireSymbols             = "true"
+    RequireNumbers             = "true"
+    MinimumPasswordLength      = var.minimum_password_length
+    PasswordReusePrevention    = var.password_reuse_prevention
+    MaxPasswordAge             = var.max_password_age
   })
 
   depends_on = [var.config_recorder_name]
@@ -244,11 +244,11 @@ resource "aws_lambda_function" "compliance_checker" {
 
   filename         = data.archive_file.compliance_checker_lambda[0].output_path
   function_name    = "${var.project_name}-${var.environment}-compliance-checker"
-  role            = aws_iam_role.compliance_checker_lambda[0].arn
-  handler         = "index.handler"
-  runtime         = "python3.11"
-  timeout         = 300
-  memory_size     = 256
+  role             = aws_iam_role.compliance_checker_lambda[0].arn
+  handler          = "index.handler"
+  runtime          = "python3.11"
+  timeout          = 300
+  memory_size      = 256
   source_code_hash = data.archive_file.compliance_checker_lambda[0].output_base64sha256
 
   environment {
@@ -542,20 +542,20 @@ resource "aws_config_remediation_configuration" "s3_bucket_ssl_requests_only" {
 
   config_rule_name = aws_config_config_rule.s3_bucket_ssl_requests_only.name
 
-  resource_type    = "AWS::S3::Bucket"
-  target_type      = "SSM_DOCUMENT"
-  target_id        = "AWD-PublishSNSNotification"
-  target_version   = "1"
+  resource_type              = "AWS::S3::Bucket"
+  target_type                = "SSM_DOCUMENT"
+  target_id                  = "AWD-PublishSNSNotification"
+  target_version             = "1"
   maximum_automatic_attempts = 3
 
   parameter {
-    name             = "TopicArn"
-    static_value     = var.notification_topic_arn
+    name         = "TopicArn"
+    static_value = var.notification_topic_arn
   }
 
   parameter {
-    name             = "Message"
-    static_value     = "S3 bucket SSL requests compliance violation detected"
+    name         = "Message"
+    static_value = "S3 bucket SSL requests compliance violation detected"
   }
 
   tags = merge(

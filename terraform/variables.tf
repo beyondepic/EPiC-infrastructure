@@ -7,7 +7,7 @@ variable "aws_region" {
   default     = "ap-southeast-4"
 
   validation {
-    condition = can(regex("^[a-z]{2}-[a-z]+-[0-9]$", var.aws_region))
+    condition     = can(regex("^[a-z]{2}-[a-z]+-[0-9]$", var.aws_region))
     error_message = "AWS region must be in the format: xx-xxxxx-x (e.g., ap-southeast-4)."
   }
 }
@@ -17,7 +17,7 @@ variable "environment" {
   type        = string
 
   validation {
-    condition = contains(["staging", "production", "shared", "development"], var.environment)
+    condition     = contains(["staging", "production", "shared", "development"], var.environment)
     error_message = "Environment must be one of: staging, production, shared, development."
   }
 }
@@ -28,7 +28,7 @@ variable "project_name" {
   default     = "epic"
 
   validation {
-    condition = can(regex("^[a-z][a-z0-9-]*[a-z0-9]$", var.project_name))
+    condition     = can(regex("^[a-z][a-z0-9-]*[a-z0-9]$", var.project_name))
     error_message = "Project name must start with a letter, contain only lowercase letters, numbers, and hyphens, and end with a letter or number."
   }
 }
@@ -46,7 +46,7 @@ variable "vpc_cidr" {
   default     = "10.0.0.0/16"
 
   validation {
-    condition = can(cidrhost(var.vpc_cidr, 0))
+    condition     = can(cidrhost(var.vpc_cidr, 0))
     error_message = "VPC CIDR must be a valid IPv4 CIDR block."
   }
 }
@@ -96,7 +96,7 @@ variable "backup_retention_days" {
   default     = 30
 
   validation {
-    condition = var.backup_retention_days >= 1 && var.backup_retention_days <= 365
+    condition     = var.backup_retention_days >= 1 && var.backup_retention_days <= 365
     error_message = "Backup retention must be between 1 and 365 days."
   }
 }
@@ -108,7 +108,7 @@ variable "notification_email" {
   default     = ""
 
   validation {
-    condition = var.notification_email == "" || can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", var.notification_email))
+    condition     = var.notification_email == "" || can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", var.notification_email))
     error_message = "Notification email must be a valid email address or empty string."
   }
 }

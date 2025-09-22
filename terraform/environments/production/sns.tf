@@ -11,7 +11,7 @@ module "sns_notifications" {
 
   # Email Configuration
   notification_email = var.notification_email
-  application_email  = var.application_email  # Separate email for production apps
+  application_email  = var.application_email # Separate email for production apps
 
   # Slack Configuration (optional)
   slack_webhook_url = var.slack_webhook_url
@@ -19,7 +19,7 @@ module "sns_notifications" {
   # Production-specific Configuration
   lambda_timeout     = 60
   lambda_memory_size = 256
-  log_retention_days = 30  # Longer retention for production
+  log_retention_days = 30 # Longer retention for production
 }
 
 # Output topic ARNs for use by other modules

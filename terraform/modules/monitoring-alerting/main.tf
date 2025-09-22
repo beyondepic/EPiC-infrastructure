@@ -129,9 +129,9 @@ resource "aws_cloudwatch_dashboard" "security" {
         height = 6
 
         properties = {
-          query   = "SOURCE '/aws/events/rule/guardduty' | fields @timestamp, detail.type, detail.severity\n| filter detail.severity > ${var.security_alert_severity_threshold}\n| sort @timestamp desc\n| limit 100"
-          region  = data.aws_region.current.id
-          title   = "Recent Security Findings (GuardDuty)"
+          query  = "SOURCE '/aws/events/rule/guardduty' | fields @timestamp, detail.type, detail.severity\n| filter detail.severity > ${var.security_alert_severity_threshold}\n| sort @timestamp desc\n| limit 100"
+          region = data.aws_region.current.id
+          title  = "Recent Security Findings (GuardDuty)"
         }
       },
       {

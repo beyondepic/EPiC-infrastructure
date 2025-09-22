@@ -60,7 +60,7 @@ variable "aws_region" {
   default     = "ap-southeast-4"
 
   validation {
-    condition = can(regex("^[a-z]{2}-[a-z]+-[0-9]$", var.aws_region))
+    condition     = can(regex("^[a-z]{2}-[a-z]+-[0-9]$", var.aws_region))
     error_message = "AWS region must be a valid region format (e.g., us-east-1, ap-southeast-4)."
   }
 }
@@ -70,7 +70,7 @@ variable "project_name" {
   type        = string
 
   validation {
-    condition = length(var.project_name) > 0 && length(var.project_name) <= 50 && can(regex("^[a-zA-Z][a-zA-Z0-9-]*$", var.project_name))
+    condition     = length(var.project_name) > 0 && length(var.project_name) <= 50 && can(regex("^[a-zA-Z][a-zA-Z0-9-]*$", var.project_name))
     error_message = "Project name must be 1-50 characters, start with a letter, and contain only letters, numbers, and hyphens."
   }
 }
@@ -80,7 +80,7 @@ variable "environment" {
   type        = string
 
   validation {
-    condition = contains(["shared", "staging", "production"], var.environment)
+    condition     = contains(["shared", "staging", "production"], var.environment)
     error_message = "Environment must be one of: shared, staging, production."
   }
 }

@@ -11,7 +11,7 @@ data "aws_region" "current" {}
 module "serverless_react_app" {
   count = var.hosting_type == "serverless" ? 1 : 0
 
-  source = "aws-ia/serverless-streamlit-app/aws"
+  source  = "aws-ia/serverless-streamlit-app/aws"
   version = "~> 1.1.0"
 
   app_name    = var.app_name
@@ -20,13 +20,13 @@ module "serverless_react_app" {
 
   # VPC Configuration
   create_vpc_resources = var.use_existing_vpc
-  vpc_id              = var.use_existing_vpc ? var.vpc_id : null
-  alb_subnets         = var.use_existing_vpc ? var.public_subnet_ids : null
-  ecs_subnets         = var.use_existing_vpc ? var.private_subnet_ids : null
+  vpc_id               = var.use_existing_vpc ? var.vpc_id : null
+  alb_subnets          = var.use_existing_vpc ? var.public_subnet_ids : null
+  ecs_subnets          = var.use_existing_vpc ? var.private_subnet_ids : null
 
   # Security Groups
-  create_alb_security_group = var.use_existing_vpc ? false : true
-  create_ecs_security_group = var.use_existing_vpc ? false : true
+  create_alb_security_group    = var.use_existing_vpc ? false : true
+  create_ecs_security_group    = var.use_existing_vpc ? false : true
   existing_alb_security_groups = var.use_existing_vpc ? [var.alb_security_group_id] : null
   existing_ecs_security_groups = var.use_existing_vpc ? [var.ecs_security_group_id] : null
 
@@ -37,12 +37,12 @@ module "serverless_react_app" {
   task_memory    = var.task_memory
 
   # ECS Configuration
-  ecs_cpu_architecture = var.ecs_cpu_architecture
+  ecs_cpu_architecture   = var.ecs_cpu_architecture
   codebuild_compute_type = var.codebuild_compute_type
-  codebuild_image = var.codebuild_image
+  codebuild_image        = var.codebuild_image
 
   # SSL Configuration
-  enable_alb_https_listener = var.ssl_certificate_arn != null
+  enable_alb_https_listener        = var.ssl_certificate_arn != null
   existing_alb_https_listener_cert = var.ssl_certificate_arn
 
   # CloudFront Configuration

@@ -91,10 +91,10 @@ output "cost_optimizer_log_group_arn" {
 output "cost_optimization_summary" {
   description = "Summary of cost optimization configuration"
   value = {
-    monthly_budget_limit          = var.monthly_budget_limit
-    budget_alert_threshold        = var.budget_alert_threshold
-    anomaly_threshold_amount      = var.anomaly_threshold_amount
-    cost_recommendations_enabled  = var.enable_cost_recommendations
+    monthly_budget_limit         = var.monthly_budget_limit
+    budget_alert_threshold       = var.budget_alert_threshold
+    anomaly_threshold_amount     = var.anomaly_threshold_amount
+    cost_recommendations_enabled = var.enable_cost_recommendations
     service_budgets_count        = length(var.service_budgets)
     monitored_services_count     = length(var.monitored_services)
     optimization_schedule        = var.cost_optimization_schedule

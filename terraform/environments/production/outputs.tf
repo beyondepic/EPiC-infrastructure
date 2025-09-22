@@ -88,8 +88,8 @@ output "cloudwatch_dashboard_urls" {
   description = "URLs to CloudWatch dashboards"
   value = {
     infrastructure = "https://ap-southeast-4.console.aws.amazon.com/cloudwatch/home?region=ap-southeast-4#dashboards:name=${module.monitoring_alerting.infrastructure_dashboard_name}"
-    security      = "https://ap-southeast-4.console.aws.amazon.com/cloudwatch/home?region=ap-southeast-4#dashboards:name=${module.monitoring_alerting.security_dashboard_name}"
-    application   = "https://ap-southeast-4.console.aws.amazon.com/cloudwatch/home?region=ap-southeast-4#dashboards:name=${module.monitoring_alerting.application_dashboard_name}"
+    security       = "https://ap-southeast-4.console.aws.amazon.com/cloudwatch/home?region=ap-southeast-4#dashboards:name=${module.monitoring_alerting.security_dashboard_name}"
+    application    = "https://ap-southeast-4.console.aws.amazon.com/cloudwatch/home?region=ap-southeast-4#dashboards:name=${module.monitoring_alerting.application_dashboard_name}"
   }
 }
 
@@ -151,15 +151,15 @@ output "aws_console_links" {
   value = {
     ec2_instances         = "https://ap-southeast-4.console.aws.amazon.com/ec2/home?region=ap-southeast-4#Instances:"
     load_balancers        = "https://ap-southeast-4.console.aws.amazon.com/ec2/home?region=ap-southeast-4#LoadBalancers:"
-    cloudfront           = "https://console.aws.amazon.com/cloudfront/v3/home#/distributions"
+    cloudfront            = "https://console.aws.amazon.com/cloudfront/v3/home#/distributions"
     cloudwatch_dashboards = "https://ap-southeast-4.console.aws.amazon.com/cloudwatch/home?region=ap-southeast-4#dashboards:"
-    s3_buckets           = "https://s3.console.aws.amazon.com/s3/buckets?region=ap-southeast-4"
-    cost_explorer        = "https://console.aws.amazon.com/cost-management/home#/cost-explorer"
-    budgets             = "https://console.aws.amazon.com/billing/home#/budgets"
-    security_hub        = "https://ap-southeast-4.console.aws.amazon.com/securityhub/home?region=ap-southeast-4#/summary"
-    config_dashboard    = "https://ap-southeast-4.console.aws.amazon.com/config/home?region=ap-southeast-4#/dashboard"
-    guardduty           = "https://ap-southeast-4.console.aws.amazon.com/guardduty/home?region=ap-southeast-4#/findings"
-    cloudtrail          = "https://ap-southeast-4.console.aws.amazon.com/cloudtrail/home?region=ap-southeast-4#/events"
+    s3_buckets            = "https://s3.console.aws.amazon.com/s3/buckets?region=ap-southeast-4"
+    cost_explorer         = "https://console.aws.amazon.com/cost-management/home#/cost-explorer"
+    budgets               = "https://console.aws.amazon.com/billing/home#/budgets"
+    security_hub          = "https://ap-southeast-4.console.aws.amazon.com/securityhub/home?region=ap-southeast-4#/summary"
+    config_dashboard      = "https://ap-southeast-4.console.aws.amazon.com/config/home?region=ap-southeast-4#/dashboard"
+    guardduty             = "https://ap-southeast-4.console.aws.amazon.com/guardduty/home?region=ap-southeast-4#/findings"
+    cloudtrail            = "https://ap-southeast-4.console.aws.amazon.com/cloudtrail/home?region=ap-southeast-4#/events"
   }
 }
 
@@ -167,24 +167,24 @@ output "aws_console_links" {
 output "production_environment_summary" {
   description = "Summary of production environment resources"
   value = {
-    environment                     = var.environment
-    region                         = var.aws_region
-    web_application_enabled        = true
-    react_hosting_enabled          = var.enable_static_hosting || var.enable_serverless_hosting
-    database_backup_enabled        = true
-    cross_region_backup_enabled    = var.enable_cross_region_backup
-    monitoring_enabled             = true
-    cost_optimization_enabled      = true
-    compliance_enabled             = true
-    reserved_instances_enabled     = var.enable_ri_recommendations
-    pci_dss_enabled               = var.pci_dss_standard
-    monthly_budget_limit          = var.monthly_budget_limit
-    instance_type                 = var.instance_type
-    min_capacity                  = var.min_capacity
-    max_capacity                  = var.max_capacity
-    backup_retention_days         = var.backup_retention_days
-    log_retention_days            = var.log_retention_days
-    deletion_protection_enabled   = var.enable_deletion_protection
+    environment                 = var.environment
+    region                      = var.aws_region
+    web_application_enabled     = true
+    react_hosting_enabled       = var.enable_static_hosting || var.enable_serverless_hosting
+    database_backup_enabled     = true
+    cross_region_backup_enabled = var.enable_cross_region_backup
+    monitoring_enabled          = true
+    cost_optimization_enabled   = true
+    compliance_enabled          = true
+    reserved_instances_enabled  = var.enable_ri_recommendations
+    pci_dss_enabled             = var.pci_dss_standard
+    monthly_budget_limit        = var.monthly_budget_limit
+    instance_type               = var.instance_type
+    min_capacity                = var.min_capacity
+    max_capacity                = var.max_capacity
+    backup_retention_days       = var.backup_retention_days
+    log_retention_days          = var.log_retention_days
+    deletion_protection_enabled = var.enable_deletion_protection
   }
 }
 
@@ -192,13 +192,13 @@ output "production_environment_summary" {
 output "compliance_status" {
   description = "Production compliance configuration status"
   value = {
-    config_rules_enabled         = var.enable_config_rules
-    security_hub_standards       = var.enable_security_hub_standards
-    custom_compliance_enabled    = var.enable_custom_compliance
-    cis_benchmark_version        = var.cis_benchmark_version
-    aws_foundational_standard    = var.aws_foundational_standard
-    pci_dss_standard            = var.pci_dss_standard
-    compliance_check_frequency   = var.compliance_check_schedule
+    config_rules_enabled       = var.enable_config_rules
+    security_hub_standards     = var.enable_security_hub_standards
+    custom_compliance_enabled  = var.enable_custom_compliance
+    cis_benchmark_version      = var.cis_benchmark_version
+    aws_foundational_standard  = var.aws_foundational_standard
+    pci_dss_standard           = var.pci_dss_standard
+    compliance_check_frequency = var.compliance_check_schedule
   }
   sensitive = false
 }

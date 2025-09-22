@@ -6,11 +6,11 @@ data "aws_region" "current" {}
 
 # Cost Budget for overall spending
 resource "aws_budgets_budget" "monthly_cost" {
-  name     = "${var.project_name}-${var.environment}-monthly-budget"
-  budget_type = "COST"
-  limit_amount = var.monthly_budget_limit
-  limit_unit   = "USD"
-  time_unit    = "MONTHLY"
+  name              = "${var.project_name}-${var.environment}-monthly-budget"
+  budget_type       = "COST"
+  limit_amount      = var.monthly_budget_limit
+  limit_unit        = "USD"
+  time_unit         = "MONTHLY"
   time_period_start = formatdate("YYYY-MM-01_00:00", timestamp())
 
   cost_filters = {
@@ -19,18 +19,18 @@ resource "aws_budgets_budget" "monthly_cost" {
 
   notification {
     comparison_operator        = "GREATER_THAN"
-    threshold                 = var.budget_alert_threshold
-    threshold_type            = "PERCENTAGE"
-    notification_type         = "ACTUAL"
+    threshold                  = var.budget_alert_threshold
+    threshold_type             = "PERCENTAGE"
+    notification_type          = "ACTUAL"
     subscriber_email_addresses = var.notification_emails
     subscriber_sns_topic_arns  = var.notification_topic_arn != null ? [var.notification_topic_arn] : []
   }
 
   notification {
     comparison_operator        = "GREATER_THAN"
-    threshold                 = var.budget_forecast_threshold
-    threshold_type            = "PERCENTAGE"
-    notification_type         = "FORECASTED"
+    threshold                  = var.budget_forecast_threshold
+    threshold_type             = "PERCENTAGE"
+    notification_type          = "FORECASTED"
     subscriber_email_addresses = var.notification_emails
     subscriber_sns_topic_arns  = var.notification_topic_arn != null ? [var.notification_topic_arn] : []
   }
@@ -49,11 +49,11 @@ resource "aws_budgets_budget" "monthly_cost" {
 resource "aws_budgets_budget" "service_budgets" {
   for_each = var.service_budgets
 
-  name          = "${var.project_name}-${var.environment}-${each.key}-budget"
-  budget_type   = "COST"
-  limit_amount  = each.value.limit
-  limit_unit    = "USD"
-  time_unit     = "MONTHLY"
+  name              = "${var.project_name}-${var.environment}-${each.key}-budget"
+  budget_type       = "COST"
+  limit_amount      = each.value.limit
+  limit_unit        = "USD"
+  time_unit         = "MONTHLY"
   time_period_start = formatdate("YYYY-MM-01_00:00", timestamp())
 
   cost_filters = {
@@ -63,8 +63,8 @@ resource "aws_budgets_budget" "service_budgets" {
 
   notification {
     comparison_operator        = "GREATER_THAN"
-    threshold                 = each.value.alert_threshold
-    threshold_type            = "PERCENTAGE"
+    threshold                  = each.value.alert_threshold
+    threshold_type             = "PERCENTAGE"
     notification_type          = "ACTUAL"
     subscriber_email_addresses = var.notification_emails
     subscriber_sns_topic_arns  = var.notification_topic_arn != null ? [var.notification_topic_arn] : []
@@ -83,13 +83,13 @@ resource "aws_budgets_budget" "service_budgets" {
 
 # Cost anomaly detection
 resource "aws_ce_anomaly_detector" "cost_anomaly" {
-  name         = "${var.project_name}-${var.environment}-cost-anomaly"
+  name          = "${var.project_name}-${var.environment}-cost-anomaly"
   detector_type = "DIMENSIONAL"
 
   specification = jsonencode({
-    Dimension = "SERVICE"
+    Dimension    = "SERVICE"
     MatchOptions = ["EQUALS"]
-    Values = var.monitored_services
+    Values       = var.monitored_services
   })
 
   tags = merge(
@@ -148,11 +148,11 @@ resource "aws_lambda_function" "cost_optimizer" {
 
   filename         = data.archive_file.cost_optimizer_lambda[0].output_path
   function_name    = "${var.project_name}-${var.environment}-cost-optimizer"
-  role            = aws_iam_role.cost_optimizer_lambda[0].arn
-  handler         = "index.handler"
-  runtime         = "python3.11"
-  timeout         = 300
-  memory_size     = 256
+  role             = aws_iam_role.cost_optimizer_lambda[0].arn
+  handler          = "index.handler"
+  runtime          = "python3.11"
+  timeout          = 300
+  memory_size      = 256
   source_code_hash = data.archive_file.cost_optimizer_lambda[0].output_base64sha256
 
   environment {
@@ -331,7 +331,7 @@ resource "aws_cloudwatch_dashboard" "cost_monitoring" {
           ]
           view    = "timeSeries"
           stacked = false
-          region  = "us-east-1"  # Billing metrics are only available in us-east-1
+          region  = "us-east-1" # Billing metrics are only available in us-east-1
           title   = "Estimated Monthly Charges"
           period  = 86400
           stat    = "Maximum"

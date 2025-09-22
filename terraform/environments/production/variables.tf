@@ -53,19 +53,19 @@ variable "slack_webhook_url" {
 variable "vpc_cidr" {
   description = "CIDR block for VPC"
   type        = string
-  default     = "10.0.0.0/16"  # Standard CIDR for production
+  default     = "10.0.0.0/16" # Standard CIDR for production
 }
 
 variable "instance_type" {
   description = "EC2 instance type"
   type        = string
-  default     = "t3.medium"  # Larger instances for production
+  default     = "t3.medium" # Larger instances for production
 }
 
 variable "min_size" {
   description = "Minimum number of instances in Auto Scaling Group"
   type        = number
-  default     = 2  # High availability
+  default     = 2 # High availability
 }
 
 variable "max_size" {
@@ -84,7 +84,7 @@ variable "desired_capacity" {
 variable "db_instance_class" {
   description = "RDS instance class"
   type        = string
-  default     = "db.t3.small"  # Production-sized database
+  default     = "db.t3.small" # Production-sized database
 }
 
 variable "db_allocated_storage" {
@@ -102,19 +102,19 @@ variable "db_max_allocated_storage" {
 variable "db_backup_retention_period" {
   description = "Number of days to retain automated backups"
   type        = number
-  default     = 30  # Longer retention for production
+  default     = 30 # Longer retention for production
 }
 
 variable "db_backup_window" {
   description = "Preferred backup window"
   type        = string
-  default     = "03:00-04:00"  # Early morning UTC
+  default     = "03:00-04:00" # Early morning UTC
 }
 
 variable "db_maintenance_window" {
   description = "Preferred maintenance window"
   type        = string
-  default     = "sun:04:00-sun:05:00"  # Sunday early morning UTC
+  default     = "sun:04:00-sun:05:00" # Sunday early morning UTC
 }
 
 # Security Variables
@@ -140,7 +140,7 @@ variable "enable_performance_insights" {
 variable "budget_limit" {
   description = "Monthly budget limit in USD"
   type        = number
-  default     = 1000  # Higher budget for production
+  default     = 1000 # Higher budget for production
 }
 
 # Monitoring and Alerting
@@ -179,7 +179,7 @@ variable "additional_tags" {
 variable "min_capacity" {
   description = "Minimum number of instances in Auto Scaling Group"
   type        = number
-  default     = 2  # High availability for production
+  default     = 2 # High availability for production
 }
 
 variable "max_capacity" {
@@ -240,44 +240,44 @@ variable "enable_serverless_hosting" {
 variable "serverless_cpu" {
   description = "CPU units for serverless container"
   type        = number
-  default     = 512  # Higher for production
+  default     = 512 # Higher for production
 }
 
 variable "serverless_memory" {
   description = "Memory for serverless container"
   type        = number
-  default     = 1024  # Higher for production
+  default     = 1024 # Higher for production
 }
 
 variable "serverless_min_capacity" {
   description = "Minimum capacity for serverless hosting"
   type        = number
-  default     = 2  # High availability
+  default     = 2 # High availability
 }
 
 variable "serverless_max_capacity" {
   description = "Maximum capacity for serverless hosting"
   type        = number
-  default     = 10  # Higher scale for production
+  default     = 10 # Higher scale for production
 }
 
 # Database Backup Variables (Phase II)
 variable "backup_retention_days" {
   description = "Number of days to retain automated backups"
   type        = number
-  default     = 30  # Longer retention for production
+  default     = 30 # Longer retention for production
 }
 
 variable "backup_schedule_expression" {
   description = "Schedule expression for automated backups"
   type        = string
-  default     = "cron(0 2 * * ? *)"  # Daily at 2 AM UTC
+  default     = "cron(0 2 * * ? *)" # Daily at 2 AM UTC
 }
 
 variable "enable_cross_region_backup" {
   description = "Enable cross-region backup replication"
   type        = bool
-  default     = true  # Enabled for production
+  default     = true # Enabled for production
 }
 
 variable "backup_destination_region" {
@@ -290,31 +290,31 @@ variable "backup_destination_region" {
 variable "cpu_threshold_high" {
   description = "CPU threshold for high utilization alarm"
   type        = number
-  default     = 70  # Lower threshold for production
+  default     = 70 # Lower threshold for production
 }
 
 variable "memory_threshold_high" {
   description = "Memory threshold for high utilization alarm"
   type        = number
-  default     = 75  # Lower threshold for production
+  default     = 75 # Lower threshold for production
 }
 
 variable "disk_threshold_high" {
   description = "Disk threshold for high utilization alarm"
   type        = number
-  default     = 80  # Lower threshold for production
+  default     = 80 # Lower threshold for production
 }
 
 variable "alb_response_time_threshold" {
   description = "ALB response time threshold in seconds"
   type        = number
-  default     = 1  # Stricter for production
+  default     = 1 # Stricter for production
 }
 
 variable "alb_5xx_threshold" {
   description = "ALB 5xx error threshold"
   type        = number
-  default     = 5  # Stricter for production
+  default     = 5 # Stricter for production
 }
 
 variable "enable_custom_metrics" {
@@ -332,26 +332,26 @@ variable "enable_log_insights" {
 variable "log_retention_days" {
   description = "CloudWatch log retention period in days"
   type        = number
-  default     = 30  # Longer retention for production
+  default     = 30 # Longer retention for production
 }
 
 # Cost Optimization Variables (Phase II)
 variable "monthly_budget_limit" {
   description = "Monthly budget limit in USD"
   type        = number
-  default     = 1000  # Higher budget for production
+  default     = 1000 # Higher budget for production
 }
 
 variable "budget_alert_threshold" {
   description = "Budget alert threshold percentage"
   type        = number
-  default     = 70  # Earlier warning for production
+  default     = 70 # Earlier warning for production
 }
 
 variable "budget_forecast_threshold" {
   description = "Budget forecast alert threshold percentage"
   type        = number
-  default     = 90  # Earlier forecast warning
+  default     = 90 # Earlier forecast warning
 }
 
 variable "notification_emails" {
@@ -363,23 +363,23 @@ variable "notification_emails" {
 variable "service_budgets" {
   description = "Service-specific budget configurations"
   type = map(object({
-    service_name     = string
+    service_name    = string
     limit           = number
     alert_threshold = number
   }))
   default = {
     ec2 = {
-      service_name     = "Amazon Elastic Compute Cloud - Compute"
+      service_name    = "Amazon Elastic Compute Cloud - Compute"
       limit           = 300
       alert_threshold = 70
     }
     s3 = {
-      service_name     = "Amazon Simple Storage Service"
+      service_name    = "Amazon Simple Storage Service"
       limit           = 100
       alert_threshold = 70
     }
     rds = {
-      service_name     = "Amazon Relational Database Service"
+      service_name    = "Amazon Relational Database Service"
       limit           = 200
       alert_threshold = 70
     }
@@ -389,7 +389,7 @@ variable "service_budgets" {
 variable "anomaly_threshold_amount" {
   description = "Cost anomaly threshold amount in USD"
   type        = number
-  default     = 50  # Higher threshold for production
+  default     = 50 # Higher threshold for production
 }
 
 variable "cost_anomaly_email" {
@@ -401,7 +401,7 @@ variable "cost_anomaly_email" {
 variable "monitored_services" {
   description = "List of AWS services to monitor for cost anomalies"
   type        = list(string)
-  default     = [
+  default = [
     "Amazon Elastic Compute Cloud - Compute",
     "Amazon Simple Storage Service",
     "Amazon Relational Database Service",
@@ -420,19 +420,19 @@ variable "enable_cost_recommendations" {
 variable "cost_optimization_schedule" {
   description = "Schedule expression for cost optimization analysis"
   type        = string
-  default     = "cron(0 8 * * MON *)"  # Every Monday at 8 AM UTC
+  default     = "cron(0 8 * * MON *)" # Every Monday at 8 AM UTC
 }
 
 variable "recommendation_cost_threshold" {
   description = "Minimum monthly savings threshold for recommendations (USD)"
   type        = number
-  default     = 25  # Higher threshold for production
+  default     = 25 # Higher threshold for production
 }
 
 variable "enable_ri_recommendations" {
   description = "Enable Reserved Instance purchase recommendations"
   type        = bool
-  default     = true  # Enabled for production
+  default     = true # Enabled for production
 }
 
 variable "ri_payment_option" {
@@ -493,7 +493,7 @@ variable "compliance_notification_email" {
 variable "compliance_check_schedule" {
   description = "Schedule expression for compliance checks"
   type        = string
-  default     = "cron(0 6 * * MON,THU *)"  # Monday and Thursday at 6 AM UTC (more frequent for production)
+  default     = "cron(0 6 * * MON,THU *)" # Monday and Thursday at 6 AM UTC (more frequent for production)
 }
 
 variable "cis_benchmark_version" {
@@ -511,32 +511,32 @@ variable "aws_foundational_standard" {
 variable "pci_dss_standard" {
   description = "Enable PCI DSS compliance standard"
   type        = bool
-  default     = true  # Enabled for production if needed
+  default     = true # Enabled for production if needed
 }
 
 variable "custom_compliance_rules" {
   description = "Custom compliance rules configuration"
   type = map(object({
-    rule_name           = string
-    description        = string
-    compliance_type    = string
-    resource_types     = list(string)
-    evaluation_mode    = string
+    rule_name       = string
+    description     = string
+    compliance_type = string
+    resource_types  = list(string)
+    evaluation_mode = string
   }))
   default = {
     encryption_check = {
-      rule_name           = "s3-bucket-encryption-enabled"
-      description        = "Checks if S3 buckets have encryption enabled"
-      compliance_type    = "NON_COMPLIANT"
-      resource_types     = ["AWS::S3::Bucket"]
-      evaluation_mode    = "DETECTIVE"
+      rule_name       = "s3-bucket-encryption-enabled"
+      description     = "Checks if S3 buckets have encryption enabled"
+      compliance_type = "NON_COMPLIANT"
+      resource_types  = ["AWS::S3::Bucket"]
+      evaluation_mode = "DETECTIVE"
     }
     backup_enabled = {
-      rule_name           = "rds-backup-enabled"
-      description        = "Checks if RDS instances have automated backups enabled"
-      compliance_type    = "NON_COMPLIANT"
-      resource_types     = ["AWS::RDS::DBInstance"]
-      evaluation_mode    = "DETECTIVE"
+      rule_name       = "rds-backup-enabled"
+      description     = "Checks if RDS instances have automated backups enabled"
+      compliance_type = "NON_COMPLIANT"
+      resource_types  = ["AWS::RDS::DBInstance"]
+      evaluation_mode = "DETECTIVE"
     }
   }
 }

@@ -63,7 +63,7 @@ output "module_info" {
     environment         = var.environment
     project_name        = var.project_name
     topics_created      = 2
-    slack_enabled      = var.slack_webhook_url != ""
+    slack_enabled       = var.slack_webhook_url != ""
     email_notifications = var.notification_email != "" || var.application_email != ""
   }
   sensitive = true

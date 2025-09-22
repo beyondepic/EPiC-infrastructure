@@ -16,8 +16,8 @@ resource "aws_cloudtrail" "main" {
   kms_key_id = aws_kms_key.cloudtrail.arn
 
   event_selector {
-    read_write_type                 = "All"
-    include_management_events       = true
+    read_write_type                  = "All"
+    include_management_events        = true
     exclude_management_event_sources = []
 
     data_resource {
@@ -321,12 +321,12 @@ resource "aws_iam_account_password_policy" "strict" {
 
   minimum_password_length        = var.password_min_length
   require_lowercase_characters   = true
-  require_numbers               = true
+  require_numbers                = true
   require_uppercase_characters   = true
-  require_symbols               = true
+  require_symbols                = true
   allow_users_to_change_password = true
-  max_password_age              = var.password_max_age
-  password_reuse_prevention     = var.password_reuse_prevention
+  max_password_age               = var.password_max_age
+  password_reuse_prevention      = var.password_reuse_prevention
 }
 
 # Common IAM roles

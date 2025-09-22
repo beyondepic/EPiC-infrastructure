@@ -73,7 +73,7 @@ output "application_url" {
   description = "Primary URL to access the React application"
   value = var.hosting_type == "serverless" ? (
     var.hosting_type == "serverless" ? module.serverless_react_app[0].streamlit_cloudfront_distribution_url : null
-  ) : (
+    ) : (
     var.hosting_type == "static" ? "https://${aws_cloudfront_distribution.react_static[0].domain_name}" : null
   )
 }

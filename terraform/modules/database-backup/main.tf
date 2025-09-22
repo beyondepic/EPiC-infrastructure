@@ -196,19 +196,19 @@ resource "aws_kms_alias" "db_backup" {
 resource "aws_lambda_function" "db_backup" {
   filename         = data.archive_file.db_backup_lambda.output_path
   function_name    = "${var.project_name}-${var.environment}-db-backup"
-  role            = aws_iam_role.db_backup_lambda.arn
-  handler         = "index.handler"
-  runtime         = "python3.11"
-  timeout         = 300
+  role             = aws_iam_role.db_backup_lambda.arn
+  handler          = "index.handler"
+  runtime          = "python3.11"
+  timeout          = 300
   source_code_hash = data.archive_file.db_backup_lambda.output_base64sha256
 
   environment {
     variables = {
-      BACKUP_BUCKET      = aws_s3_bucket.db_backups.bucket
-      KMS_KEY_ID         = aws_kms_key.db_backup.key_id
-      SNS_TOPIC_ARN      = var.notification_topic_arn
-      BACKUP_PREFIX      = var.backup_prefix
-      RETENTION_DAYS     = var.backup_retention_days
+      BACKUP_BUCKET  = aws_s3_bucket.db_backups.bucket
+      KMS_KEY_ID     = aws_kms_key.db_backup.key_id
+      SNS_TOPIC_ARN  = var.notification_topic_arn
+      BACKUP_PREFIX  = var.backup_prefix
+      RETENTION_DAYS = var.backup_retention_days
     }
   }
 

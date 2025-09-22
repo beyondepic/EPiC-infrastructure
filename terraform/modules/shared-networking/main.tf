@@ -246,7 +246,7 @@ resource "aws_iam_role_policy" "flow_log" {
           "logs:DescribeLogGroups",
           "logs:DescribeLogStreams"
         ]
-        Effect = "Allow"
+        Effect   = "Allow"
         Resource = "*"
       }
     ]
@@ -404,7 +404,7 @@ resource "aws_vpc_endpoint" "s3" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect = "Allow"
+        Effect    = "Allow"
         Principal = "*"
         Action = [
           "s3:GetObject",
@@ -444,7 +444,7 @@ resource "aws_vpc_endpoint" "dynamodb" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect = "Allow"
+        Effect    = "Allow"
         Principal = "*"
         Action = [
           "dynamodb:Query",
@@ -522,7 +522,7 @@ resource "aws_vpc_endpoint" "ec2" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect = "Allow"
+        Effect    = "Allow"
         Principal = "*"
         Action = [
           "ec2:Describe*",
@@ -562,7 +562,7 @@ resource "aws_vpc_endpoint" "logs" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect = "Allow"
+        Effect    = "Allow"
         Principal = "*"
         Action = [
           "logs:CreateLogGroup",
@@ -603,7 +603,7 @@ resource "aws_vpc_endpoint" "monitoring" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect = "Allow"
+        Effect    = "Allow"
         Principal = "*"
         Action = [
           "cloudwatch:PutMetricData",
@@ -642,7 +642,7 @@ resource "aws_vpc_endpoint" "sns" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect = "Allow"
+        Effect    = "Allow"
         Principal = "*"
         Action = [
           "sns:Publish",
@@ -836,7 +836,7 @@ resource "aws_vpc_endpoint" "cloudtrail" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect = "Allow"
+        Effect    = "Allow"
         Principal = "*"
         Action = [
           "cloudtrail:LookupEvents",

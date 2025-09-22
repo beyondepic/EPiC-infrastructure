@@ -19,8 +19,8 @@ variable "alert_topic_arn" {
 variable "applications" {
   description = "List of applications to monitor"
   type = list(object({
-    name                = string
-    load_balancer_name  = string
+    name               = string
+    load_balancer_name = string
   }))
   default = []
 }
@@ -65,7 +65,7 @@ variable "rds_cpu_threshold" {
 variable "rds_memory_threshold" {
   description = "RDS freeable memory threshold (bytes)"
   type        = number
-  default     = 104857600  # 100MB
+  default     = 104857600 # 100MB
 }
 
 variable "lambda_error_threshold" {
@@ -77,7 +77,7 @@ variable "lambda_error_threshold" {
 variable "lambda_duration_threshold" {
   description = "Lambda duration threshold (milliseconds)"
   type        = number
-  default     = 30000  # 30 seconds
+  default     = 30000 # 30 seconds
 }
 
 variable "application_error_threshold" {

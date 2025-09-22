@@ -13,7 +13,7 @@ variable "environment" {
 variable "backup_schedule" {
   description = "Schedule expression for automated backups (EventBridge/CloudWatch Events syntax)"
   type        = string
-  default     = "cron(0 2 * * ? *)"  # Daily at 2 AM UTC
+  default     = "cron(0 2 * * ? *)" # Daily at 2 AM UTC
 }
 
 variable "backup_retention_days" {

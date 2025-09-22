@@ -45,7 +45,7 @@ variable "notification_topic_arn" {
 variable "service_budgets" {
   description = "Service-specific budget configurations"
   type = map(object({
-    service_name     = string
+    service_name    = string
     limit           = number
     alert_threshold = number
   }))
@@ -97,7 +97,7 @@ variable "enable_cost_recommendations" {
 variable "cost_optimization_schedule" {
   description = "Schedule expression for cost optimization analysis"
   type        = string
-  default     = "cron(0 9 * * MON *)"  # Every Monday at 9 AM UTC
+  default     = "cron(0 9 * * MON *)" # Every Monday at 9 AM UTC
 }
 
 variable "recommendation_cost_threshold" {

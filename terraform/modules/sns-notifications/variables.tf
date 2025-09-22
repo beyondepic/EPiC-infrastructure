@@ -28,7 +28,7 @@ variable "notification_email" {
   default     = ""
 
   validation {
-    condition = var.notification_email == "" || can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", var.notification_email))
+    condition     = var.notification_email == "" || can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", var.notification_email))
     error_message = "Notification email must be a valid email address or empty string."
   }
 }
@@ -39,7 +39,7 @@ variable "application_email" {
   default     = ""
 
   validation {
-    condition = var.application_email == "" || can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", var.application_email))
+    condition     = var.application_email == "" || can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", var.application_email))
     error_message = "Application email must be a valid email address or empty string."
   }
 }
@@ -64,7 +64,7 @@ variable "message_retention_hours" {
   default     = 24
 
   validation {
-    condition = var.message_retention_hours >= 1 && var.message_retention_hours <= 168
+    condition     = var.message_retention_hours >= 1 && var.message_retention_hours <= 168
     error_message = "Message retention must be between 1 and 168 hours (1 week)."
   }
 }
@@ -76,7 +76,7 @@ variable "lambda_timeout" {
   default     = 30
 
   validation {
-    condition = var.lambda_timeout >= 1 && var.lambda_timeout <= 900
+    condition     = var.lambda_timeout >= 1 && var.lambda_timeout <= 900
     error_message = "Lambda timeout must be between 1 and 900 seconds."
   }
 }
@@ -87,7 +87,7 @@ variable "lambda_memory_size" {
   default     = 128
 
   validation {
-    condition = var.lambda_memory_size >= 128 && var.lambda_memory_size <= 10240
+    condition     = var.lambda_memory_size >= 128 && var.lambda_memory_size <= 10240
     error_message = "Lambda memory size must be between 128 and 10240 MB."
   }
 }
@@ -99,7 +99,7 @@ variable "log_retention_days" {
   default     = 14
 
   validation {
-    condition = contains([1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1096, 1827, 2192, 2557, 2922, 3288, 3653], var.log_retention_days)
+    condition     = contains([1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1096, 1827, 2192, 2557, 2922, 3288, 3653], var.log_retention_days)
     error_message = "Log retention days must be one of the supported CloudWatch values."
   }
 }

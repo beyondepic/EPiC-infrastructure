@@ -153,18 +153,18 @@ variable "geo_restriction_locations" {
 variable "api_cache_behaviors" {
   description = "List of cache behaviors for API routes"
   type = list(object({
-    path_pattern             = string
-    allowed_methods          = list(string)
-    cached_methods           = list(string)
-    target_origin_id         = string
-    forward_query_string     = bool
-    forward_headers          = list(string)
-    forward_cookies          = string
-    viewer_protocol_policy   = string
-    min_ttl                  = number
-    default_ttl              = number
-    max_ttl                  = number
-    compress                 = bool
+    path_pattern           = string
+    allowed_methods        = list(string)
+    cached_methods         = list(string)
+    target_origin_id       = string
+    forward_query_string   = bool
+    forward_headers        = list(string)
+    forward_cookies        = string
+    viewer_protocol_policy = string
+    min_ttl                = number
+    default_ttl            = number
+    max_ttl                = number
+    compress               = bool
   }))
   default = []
 }
