@@ -3,17 +3,17 @@
 # Dashboard Outputs
 output "infrastructure_dashboard_url" {
   description = "URL to the infrastructure overview dashboard"
-  value       = "https://${data.aws_region.current.name}.console.aws.amazon.com/cloudwatch/home?region=${data.aws_region.current.name}#dashboards:name=${aws_cloudwatch_dashboard.infrastructure_overview.dashboard_name}"
+  value       = "https://${data.aws_region.current.id}.console.aws.amazon.com/cloudwatch/home?region=${data.aws_region.current.id}#dashboards:name=${aws_cloudwatch_dashboard.infrastructure_overview.dashboard_name}"
 }
 
 output "security_dashboard_url" {
   description = "URL to the security dashboard"
-  value       = "https://${data.aws_region.current.name}.console.aws.amazon.com/cloudwatch/home?region=${data.aws_region.current.name}#dashboards:name=${aws_cloudwatch_dashboard.security.dashboard_name}"
+  value       = "https://${data.aws_region.current.id}.console.aws.amazon.com/cloudwatch/home?region=${data.aws_region.current.id}#dashboards:name=${aws_cloudwatch_dashboard.security.dashboard_name}"
 }
 
 output "application_dashboard_url" {
   description = "URL to the application dashboard"
-  value       = length(var.applications) > 0 ? "https://${data.aws_region.current.name}.console.aws.amazon.com/cloudwatch/home?region=${data.aws_region.current.name}#dashboards:name=${aws_cloudwatch_dashboard.application[0].dashboard_name}" : null
+  value       = length(var.applications) > 0 ? "https://${data.aws_region.current.id}.console.aws.amazon.com/cloudwatch/home?region=${data.aws_region.current.id}#dashboards:name=${aws_cloudwatch_dashboard.application[0].dashboard_name}" : null
 }
 
 # Dashboard Names

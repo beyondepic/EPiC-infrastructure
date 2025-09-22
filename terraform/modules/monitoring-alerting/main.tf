@@ -25,7 +25,7 @@ resource "aws_cloudwatch_dashboard" "infrastructure_overview" {
           ]
           view    = "timeSeries"
           stacked = false
-          region  = data.aws_region.current.name
+          region  = data.aws_region.current.id
           title   = "Application Performance"
           period  = 300
         }
@@ -45,7 +45,7 @@ resource "aws_cloudwatch_dashboard" "infrastructure_overview" {
           ]
           view    = "timeSeries"
           stacked = false
-          region  = data.aws_region.current.name
+          region  = data.aws_region.current.id
           title   = "Database Performance"
           period  = 300
         }
@@ -64,7 +64,7 @@ resource "aws_cloudwatch_dashboard" "infrastructure_overview" {
           ]
           view    = "timeSeries"
           stacked = false
-          region  = data.aws_region.current.name
+          region  = data.aws_region.current.id
           title   = "Storage Usage"
           period  = 86400
         }
@@ -84,7 +84,7 @@ resource "aws_cloudwatch_dashboard" "infrastructure_overview" {
           ]
           view    = "timeSeries"
           stacked = false
-          region  = data.aws_region.current.name
+          region  = data.aws_region.current.id
           title   = "Lambda Functions"
           period  = 300
         }
@@ -105,7 +105,7 @@ resource "aws_cloudwatch_dashboard" "infrastructure_overview" {
           ]
           view    = "timeSeries"
           stacked = false
-          region  = data.aws_region.current.name
+          region  = data.aws_region.current.id
           title   = "CloudFront CDN"
           period  = 300
         }
@@ -113,14 +113,6 @@ resource "aws_cloudwatch_dashboard" "infrastructure_overview" {
     ]
   })
 
-  tags = merge(
-    {
-      Name        = "${var.project_name}-${var.environment}-infrastructure-dashboard"
-      Environment = var.environment
-      Module      = "monitoring-alerting"
-    },
-    var.additional_tags
-  )
 }
 
 # Security Dashboard
@@ -138,7 +130,7 @@ resource "aws_cloudwatch_dashboard" "security" {
 
         properties = {
           query   = "SOURCE '/aws/events/rule/guardduty' | fields @timestamp, detail.type, detail.severity\n| filter detail.severity > ${var.security_alert_severity_threshold}\n| sort @timestamp desc\n| limit 100"
-          region  = data.aws_region.current.name
+          region  = data.aws_region.current.id
           title   = "Recent Security Findings (GuardDuty)"
         }
       },
@@ -156,7 +148,7 @@ resource "aws_cloudwatch_dashboard" "security" {
           ]
           view    = "timeSeries"
           stacked = false
-          region  = data.aws_region.current.name
+          region  = data.aws_region.current.id
           title   = "Compliance Status"
           period  = 3600
         }
@@ -175,7 +167,7 @@ resource "aws_cloudwatch_dashboard" "security" {
           ]
           view    = "timeSeries"
           stacked = false
-          region  = data.aws_region.current.name
+          region  = data.aws_region.current.id
           title   = "API Activity (CloudTrail)"
           period  = 3600
         }
@@ -183,14 +175,6 @@ resource "aws_cloudwatch_dashboard" "security" {
     ]
   })
 
-  tags = merge(
-    {
-      Name        = "${var.project_name}-${var.environment}-security-dashboard"
-      Environment = var.environment
-      Module      = "monitoring-alerting"
-    },
-    var.additional_tags
-  )
 }
 
 # Application-specific dashboard
@@ -217,7 +201,7 @@ resource "aws_cloudwatch_dashboard" "application" {
           ]
           view    = "timeSeries"
           stacked = false
-          region  = data.aws_region.current.name
+          region  = data.aws_region.current.id
           title   = "${app.name} - Load Balancer"
           period  = 300
         }
@@ -225,14 +209,6 @@ resource "aws_cloudwatch_dashboard" "application" {
     ])
   })
 
-  tags = merge(
-    {
-      Name        = "${var.project_name}-${var.environment}-applications-dashboard"
-      Environment = var.environment
-      Module      = "monitoring-alerting"
-    },
-    var.additional_tags
-  )
 }
 
 # High CPU utilization alarm
@@ -255,14 +231,6 @@ resource "aws_cloudwatch_metric_alarm" "high_cpu" {
 
   treat_missing_data = "notBreaching"
 
-  tags = merge(
-    {
-      Name        = "${var.project_name}-${var.environment}-high-cpu-alarm"
-      Environment = var.environment
-      Module      = "monitoring-alerting"
-    },
-    var.additional_tags
-  )
 }
 
 # High memory utilization alarm
@@ -283,14 +251,6 @@ resource "aws_cloudwatch_metric_alarm" "high_memory" {
 
   treat_missing_data = "notBreaching"
 
-  tags = merge(
-    {
-      Name        = "${var.project_name}-${var.environment}-high-memory-alarm"
-      Environment = var.environment
-      Module      = "monitoring-alerting"
-    },
-    var.additional_tags
-  )
 }
 
 # High disk utilization alarm
@@ -311,14 +271,6 @@ resource "aws_cloudwatch_metric_alarm" "high_disk" {
 
   treat_missing_data = "notBreaching"
 
-  tags = merge(
-    {
-      Name        = "${var.project_name}-${var.environment}-high-disk-alarm"
-      Environment = var.environment
-      Module      = "monitoring-alerting"
-    },
-    var.additional_tags
-  )
 }
 
 # ALB response time alarm
@@ -343,14 +295,6 @@ resource "aws_cloudwatch_metric_alarm" "alb_response_time" {
 
   treat_missing_data = "notBreaching"
 
-  tags = merge(
-    {
-      Name        = "${var.project_name}-${var.environment}-alb-response-time-alarm"
-      Environment = var.environment
-      Module      = "monitoring-alerting"
-    },
-    var.additional_tags
-  )
 }
 
 # ALB 5xx error rate alarm
@@ -375,14 +319,6 @@ resource "aws_cloudwatch_metric_alarm" "alb_5xx_errors" {
 
   treat_missing_data = "notBreaching"
 
-  tags = merge(
-    {
-      Name        = "${var.project_name}-${var.environment}-alb-5xx-errors-alarm"
-      Environment = var.environment
-      Module      = "monitoring-alerting"
-    },
-    var.additional_tags
-  )
 }
 
 # RDS CPU utilization alarm
@@ -407,14 +343,6 @@ resource "aws_cloudwatch_metric_alarm" "rds_cpu" {
 
   treat_missing_data = "notBreaching"
 
-  tags = merge(
-    {
-      Name        = "${var.project_name}-${var.environment}-rds-cpu-alarm"
-      Environment = var.environment
-      Module      = "monitoring-alerting"
-    },
-    var.additional_tags
-  )
 }
 
 # RDS freeable memory alarm
@@ -439,14 +367,6 @@ resource "aws_cloudwatch_metric_alarm" "rds_memory" {
 
   treat_missing_data = "notBreaching"
 
-  tags = merge(
-    {
-      Name        = "${var.project_name}-${var.environment}-rds-memory-alarm"
-      Environment = var.environment
-      Module      = "monitoring-alerting"
-    },
-    var.additional_tags
-  )
 }
 
 # Lambda error rate alarm
@@ -471,14 +391,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_errors" {
 
   treat_missing_data = "notBreaching"
 
-  tags = merge(
-    {
-      Name        = "${var.project_name}-${var.environment}-lambda-${each.key}-errors-alarm"
-      Environment = var.environment
-      Module      = "monitoring-alerting"
-    },
-    var.additional_tags
-  )
 }
 
 # Lambda duration alarm
@@ -502,14 +414,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_duration" {
 
   treat_missing_data = "notBreaching"
 
-  tags = merge(
-    {
-      Name        = "${var.project_name}-${var.environment}-lambda-${each.key}-duration-alarm"
-      Environment = var.environment
-      Module      = "monitoring-alerting"
-    },
-    var.additional_tags
-  )
 }
 
 # CloudWatch log insights saved queries
@@ -571,12 +475,4 @@ resource "aws_cloudwatch_metric_alarm" "application_errors" {
 
   treat_missing_data = "notBreaching"
 
-  tags = merge(
-    {
-      Name        = "${var.project_name}-${var.environment}-application-errors-alarm"
-      Environment = var.environment
-      Module      = "monitoring-alerting"
-    },
-    var.additional_tags
-  )
 }
