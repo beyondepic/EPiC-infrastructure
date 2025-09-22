@@ -21,13 +21,14 @@ from typing import Dict, List, Any, Optional
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-# AWS clients
-ce = boto3.client('ce')
-ec2 = boto3.client('ec2')
-cloudwatch = boto3.client('cloudwatch')
-rds = boto3.client('rds')
-s3 = boto3.client('s3')
-sns = boto3.client('sns')
+# AWS clients - get region from environment or session
+region = os.environ.get('AWS_REGION', boto3.Session().region_name)
+ce = boto3.client('ce', region_name=region)
+ec2 = boto3.client('ec2', region_name=region)
+cloudwatch = boto3.client('cloudwatch', region_name=region)
+rds = boto3.client('rds', region_name=region)
+s3 = boto3.client('s3', region_name=region)
+sns = boto3.client('sns', region_name=region)
 
 # Environment variables
 SNS_TOPIC_ARN = os.environ.get('SNS_TOPIC_ARN')

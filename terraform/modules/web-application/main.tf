@@ -142,6 +142,135 @@ resource "aws_lb" "web" {
   }
 }
 
+# WAF Web ACL for Application Load Balancer Protection
+resource "aws_wafv2_web_acl" "web_acl" {
+  count = var.enable_waf ? 1 : 0
+
+  name  = "${var.project_name}-${var.environment}-web-waf"
+  scope = "REGIONAL"
+
+  default_action {
+    allow {}
+  }
+
+  # AWS Managed Rule Set - Common Rule Set
+  rule {
+    name     = "AWSManagedRulesCommonRuleSet"
+    priority = 1
+
+    override_action {
+      none {}
+    }
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesCommonRuleSet"
+        vendor_name = "AWS"
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.project_name}${var.environment}CommonRuleSetMetric"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  # AWS Managed Rule Set - Known Bad Inputs
+  rule {
+    name     = "AWSManagedRulesKnownBadInputsRuleSet"
+    priority = 2
+
+    override_action {
+      none {}
+    }
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesKnownBadInputsRuleSet"
+        vendor_name = "AWS"
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.project_name}${var.environment}KnownBadInputsMetric"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  # Rate Limiting Rule
+  rule {
+    name     = "RateLimitRule"
+    priority = 3
+
+    action {
+      block {}
+    }
+
+    statement {
+      rate_based_statement {
+        limit              = var.waf_rate_limit
+        aggregate_key_type = "IP"
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.project_name}${var.environment}RateLimitMetric"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  # Geo Blocking Rule (if enabled)
+  dynamic "rule" {
+    for_each = var.enable_geo_blocking && length(var.blocked_countries) > 0 ? [1] : []
+    content {
+      name     = "GeoBlockingRule"
+      priority = 4
+
+      action {
+        block {}
+      }
+
+      statement {
+        geo_match_statement {
+          country_codes = var.blocked_countries
+        }
+      }
+
+      visibility_config {
+        cloudwatch_metrics_enabled = true
+        metric_name                = "${var.project_name}${var.environment}GeoBlockingMetric"
+        sampled_requests_enabled   = true
+      }
+    }
+  }
+
+  visibility_config {
+    cloudwatch_metrics_enabled = true
+    metric_name                = "${var.project_name}${var.environment}WebACLMetric"
+    sampled_requests_enabled   = true
+  }
+
+  tags = merge(
+    {
+      Name        = "${var.project_name}-${var.environment}-web-waf"
+      Environment = var.environment
+      Module      = "web-application"
+    },
+    var.additional_tags
+  )
+}
+
+# Associate WAF with Application Load Balancer
+resource "aws_wafv2_web_acl_association" "web_acl_association" {
+  count = var.enable_waf ? 1 : 0
+
+  resource_arn = aws_lb.web.arn
+  web_acl_arn  = aws_wafv2_web_acl.web_acl[0].arn
+}
+
 # Target Group
 resource "aws_lb_target_group" "web" {
   name     = "${var.project_name}-${var.environment}-web-tg"

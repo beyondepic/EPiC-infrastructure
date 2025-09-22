@@ -20,10 +20,11 @@ from typing import Dict, List, Any
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-# AWS clients
-rds = boto3.client('rds', region_name='${region}')
-s3 = boto3.client('s3', region_name='${region}')
-sns = boto3.client('sns', region_name='${region}')
+# AWS clients - get region from environment or session
+region = os.environ.get('AWS_REGION', boto3.Session().region_name)
+rds = boto3.client('rds', region_name=region)
+s3 = boto3.client('s3', region_name=region)
+sns = boto3.client('sns', region_name=region)
 
 # Environment variables
 BACKUP_BUCKET = os.environ['BACKUP_BUCKET']

@@ -107,7 +107,9 @@ terraform apply
 - **NAT Gateways** - Secure outbound connectivity for private subnets
 - **Security Groups** - Web, application, and database tier protection
 - **VPC Flow Logs** - Network monitoring and troubleshooting
+- **VPC Endpoints** - Private connectivity to AWS services (S3, DynamoDB, etc.)
 - **DB Subnet Groups** - Ready for RDS deployments
+- **Input Validation** - Comprehensive validation for all configuration parameters
 
 #### 2. **Security Baseline** (`security-baseline`)
 - **CloudTrail** - Comprehensive audit logging with S3 storage
@@ -120,10 +122,14 @@ terraform apply
 #### 3. **Web Application** (`web-application`)
 - **Auto Scaling Groups** - Automated scaling based on CPU metrics
 - **Application Load Balancer** - High availability with health checks
+- **AWS WAF Integration** - Advanced web application firewall protection
+- **Managed Rule Sets** - Core, Known Bad Inputs, SQL injection protection
+- **Rate Limiting** - Protection against DDoS and abuse
+- **Geographic Blocking** - Optional country-based access control
 - **CloudWatch Integration** - Detailed monitoring and alarms
 - **Instance Profiles** - Secure IAM integration
-- **User Data Scripts** - Automated application setup
 - **SSL/TLS Support** - HTTPS listener configuration
+- **Input Validation** - Comprehensive validation for all configuration parameters
 
 #### 4. **React Hosting** (`react-hosting`)
 - **Dual Hosting Options**:
@@ -309,6 +315,12 @@ Each environment has its own:
 - ✅ AWS-IA module integration (serverless-streamlit-app)
 - ✅ Comprehensive deployment guide
 - ✅ Security-first architecture with best practices
+- ✅ **Recent Enhancements (September 2025)**:
+  - ✅ AWS WAF integration for web application protection
+  - ✅ VPC Endpoints for secure AWS service connectivity
+  - ✅ Comprehensive input validation across all modules
+  - ✅ Fixed critical Lambda region interpolation bugs
+  - ✅ Enhanced repository documentation and structure
 
 ### Next Phase: Expansion (Q2 2025)
 - 🔲 Advanced monitoring and alerting

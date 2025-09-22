@@ -112,3 +112,58 @@ output "availability_zones" {
   description = "List of availability zones used"
   value       = data.aws_availability_zones.available.names
 }
+
+# VPC Endpoints
+output "vpc_endpoints_enabled" {
+  description = "Whether VPC endpoints are enabled"
+  value       = var.enable_vpc_endpoints
+}
+
+output "s3_vpc_endpoint_id" {
+  description = "ID of the S3 VPC endpoint"
+  value       = var.enable_vpc_endpoints ? aws_vpc_endpoint.s3[0].id : null
+}
+
+output "dynamodb_vpc_endpoint_id" {
+  description = "ID of the DynamoDB VPC endpoint"
+  value       = var.enable_vpc_endpoints ? aws_vpc_endpoint.dynamodb[0].id : null
+}
+
+output "vpc_endpoints_security_group_id" {
+  description = "ID of the security group for VPC endpoints"
+  value       = var.enable_vpc_endpoints ? aws_security_group.vpc_endpoints[0].id : null
+}
+
+output "vpc_endpoints_route_table_id" {
+  description = "ID of the route table for VPC endpoints"
+  value       = var.enable_vpc_endpoints ? aws_route_table.vpc_endpoints[0].id : null
+}
+
+# Advanced Security Outputs
+output "network_acl_id" {
+  description = "ID of the main Network ACL"
+  value       = aws_network_acl.main.id
+}
+
+output "vpc_flow_log_group_name" {
+  description = "Name of the VPC Flow Logs CloudWatch Log Group"
+  value       = var.enable_flow_logs ? aws_cloudwatch_log_group.vpc_flow_log[0].name : null
+}
+
+output "security_insights_query_names" {
+  description = "Names of CloudWatch Insights queries for security monitoring"
+  value = var.enable_flow_logs ? [
+    aws_cloudwatch_query_definition.vpc_flow_log_security[0].name,
+    aws_cloudwatch_query_definition.vpc_flow_log_top_talkers[0].name
+  ] : []
+}
+
+output "security_alarm_arn" {
+  description = "ARN of the VPC security monitoring alarm"
+  value       = var.enable_flow_logs ? aws_cloudwatch_metric_alarm.vpc_rejected_connections[0].arn : null
+}
+
+output "cloudtrail_vpc_endpoint_id" {
+  description = "ID of the CloudTrail VPC endpoint"
+  value       = var.enable_vpc_endpoints ? aws_vpc_endpoint.cloudtrail[0].id : null
+}

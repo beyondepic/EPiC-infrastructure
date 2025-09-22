@@ -91,3 +91,19 @@ output "cpu_low_alarm_arn" {
   description = "ARN of the CPU low alarm"
   value       = aws_cloudwatch_metric_alarm.cpu_low.arn
 }
+
+# WAF Outputs
+output "waf_web_acl_arn" {
+  description = "ARN of the WAF Web ACL"
+  value       = var.enable_waf ? aws_wafv2_web_acl.web_acl[0].arn : null
+}
+
+output "waf_web_acl_id" {
+  description = "ID of the WAF Web ACL"
+  value       = var.enable_waf ? aws_wafv2_web_acl.web_acl[0].id : null
+}
+
+output "waf_web_acl_name" {
+  description = "Name of the WAF Web ACL"
+  value       = var.enable_waf ? aws_wafv2_web_acl.web_acl[0].name : null
+}
