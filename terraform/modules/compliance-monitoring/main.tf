@@ -443,7 +443,7 @@ resource "aws_cloudwatch_dashboard" "compliance" {
           ]
           view    = "timeSeries"
           stacked = false
-          region  = data.aws_region.current.name
+          region  = data.aws_region.current.id
           title   = "Config Rule Compliance"
           period  = 3600
         }
@@ -463,7 +463,7 @@ resource "aws_cloudwatch_dashboard" "compliance" {
           ]
           view    = "timeSeries"
           stacked = false
-          region  = data.aws_region.current.name
+          region  = data.aws_region.current.id
           title   = "Security Hub Findings"
           period  = 3600
         }

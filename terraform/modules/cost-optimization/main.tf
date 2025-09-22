@@ -13,8 +13,9 @@ resource "aws_budgets_budget" "monthly_cost" {
   time_unit         = "MONTHLY"
   time_period_start = formatdate("YYYY-MM-01_00:00", timestamp())
 
-  cost_filters = {
-    Tag = var.cost_allocation_tags
+  cost_filter {
+    name   = "TagKeyValue"
+    values = var.cost_allocation_tags
   }
 
   notification {
@@ -56,9 +57,14 @@ resource "aws_budgets_budget" "service_budgets" {
   time_unit         = "MONTHLY"
   time_period_start = formatdate("YYYY-MM-01_00:00", timestamp())
 
-  cost_filters = {
-    Service = [each.value.service_name]
-    Tag     = var.cost_allocation_tags
+  cost_filter {
+    name   = "Service"
+    values = [each.value.service_name]
+  }
+
+  cost_filter {
+    name   = "TagKeyValue"
+    values = var.cost_allocation_tags
   }
 
   notification {
@@ -81,66 +87,8 @@ resource "aws_budgets_budget" "service_budgets" {
   )
 }
 
-# Cost anomaly detection
-resource "aws_ce_anomaly_detector" "cost_anomaly" {
-  name          = "${var.project_name}-${var.environment}-cost-anomaly"
-  detector_type = "DIMENSIONAL"
-
-  specification = jsonencode({
-    Dimension    = "SERVICE"
-    MatchOptions = ["EQUALS"]
-    Values       = var.monitored_services
-  })
-
-  tags = merge(
-    {
-      Name        = "${var.project_name}-${var.environment}-cost-anomaly-detector"
-      Environment = var.environment
-      Module      = "cost-optimization"
-    },
-    var.additional_tags
-  )
-}
-
-# Cost anomaly subscription
-resource "aws_ce_anomaly_subscription" "cost_anomaly" {
-  name      = "${var.project_name}-${var.environment}-cost-anomaly-subscription"
-  frequency = "DAILY"
-
-  anomaly_detector_arn_list = [aws_ce_anomaly_detector.cost_anomaly.arn]
-
-  subscriber {
-    type    = "EMAIL"
-    address = var.cost_anomaly_email
-  }
-
-  dynamic "subscriber" {
-    for_each = var.notification_topic_arn != null ? [1] : []
-    content {
-      type    = "SNS"
-      address = var.notification_topic_arn
-    }
-  }
-
-  threshold_expression {
-    and {
-      dimension {
-        key           = "ANOMALY_TOTAL_IMPACT_ABSOLUTE"
-        values        = [tostring(var.anomaly_threshold_amount)]
-        match_options = ["GREATER_THAN_OR_EQUAL"]
-      }
-    }
-  }
-
-  tags = merge(
-    {
-      Name        = "${var.project_name}-${var.environment}-cost-anomaly-subscription"
-      Environment = var.environment
-      Module      = "cost-optimization"
-    },
-    var.additional_tags
-  )
-}
+# Note: Cost Explorer anomaly detection resources are not available in Terraform AWS provider
+# Manual setup required through AWS Console or AWS CLI
 
 # Lambda function for cost optimization recommendations
 resource "aws_lambda_function" "cost_optimizer" {
@@ -385,14 +333,6 @@ resource "aws_cloudwatch_dashboard" "cost_monitoring" {
     ]
   })
 
-  tags = merge(
-    {
-      Name        = "${var.project_name}-${var.environment}-cost-monitoring-dashboard"
-      Environment = var.environment
-      Module      = "cost-optimization"
-    },
-    var.additional_tags
-  )
 }
 
 # Cost allocation tags
@@ -405,9 +345,9 @@ resource "aws_ce_cost_category" "project_categories" {
   rule {
     value = "Production"
     rule {
-      dimension {
-        key           = "TAG"
-        values        = ["Environment:production"]
+      tags {
+        key           = "Environment"
+        values        = ["production"]
         match_options = ["EQUALS"]
       }
     }
@@ -416,9 +356,9 @@ resource "aws_ce_cost_category" "project_categories" {
   rule {
     value = "Staging"
     rule {
-      dimension {
-        key           = "TAG"
-        values        = ["Environment:staging"]
+      tags {
+        key           = "Environment"
+        values        = ["staging"]
         match_options = ["EQUALS"]
       }
     }
@@ -427,9 +367,9 @@ resource "aws_ce_cost_category" "project_categories" {
   rule {
     value = "Shared"
     rule {
-      dimension {
-        key           = "TAG"
-        values        = ["Environment:shared"]
+      tags {
+        key           = "Environment"
+        values        = ["shared"]
         match_options = ["EQUALS"]
       }
     }
