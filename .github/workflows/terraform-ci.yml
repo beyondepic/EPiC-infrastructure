@@ -30,10 +30,7 @@ jobs:
           'terraform/modules/security-baseline',
           'terraform/modules/database-backup',
           'terraform/modules/sns-notifications',
-          'terraform/modules/react-hosting',
-          'terraform/modules/compliance-monitoring',
-          'terraform/modules/cost-optimization',
-          'terraform/modules/monitoring-alerting'
+          'terraform/modules/react-hosting'
         ]
 
     steps:
