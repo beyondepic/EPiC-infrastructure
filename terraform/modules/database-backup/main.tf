@@ -56,6 +56,10 @@ resource "aws_s3_bucket_lifecycle_configuration" "db_backups" {
     id     = "db_backup_lifecycle"
     status = "Enabled"
 
+    filter {
+      prefix = var.backup_prefix
+    }
+
     # Transition to IA after 30 days
     transition {
       days          = 30
@@ -90,7 +94,6 @@ resource "aws_s3_bucket_lifecycle_configuration" "db_backups" {
 resource "aws_s3_bucket" "db_backups_replica" {
   count = var.enable_cross_region_replication ? 1 : 0
 
-  provider      = aws.replica
   bucket        = "${var.project_name}-${var.environment}-db-backups-replica-${random_string.bucket_suffix.result}"
   force_destroy = var.enable_force_destroy
 
@@ -108,8 +111,7 @@ resource "aws_s3_bucket" "db_backups_replica" {
 resource "aws_s3_bucket_versioning" "db_backups_replica" {
   count = var.enable_cross_region_replication ? 1 : 0
 
-  provider = aws.replica
-  bucket   = aws_s3_bucket.db_backups_replica[0].id
+  bucket = aws_s3_bucket.db_backups_replica[0].id
   versioning_configuration {
     status = "Enabled"
   }
@@ -228,7 +230,7 @@ data "archive_file" "db_backup_lambda" {
   output_path = "/tmp/db_backup_lambda.zip"
   source {
     content = templatefile("${path.module}/lambda/db_backup.py", {
-      region = data.aws_region.current.name
+      region = data.aws_region.current.id
     })
     filename = "index.py"
   }
@@ -355,7 +357,7 @@ resource "aws_iam_role_policy" "db_backup_lambda" {
           "logs:CreateLogStream",
           "logs:PutLogEvents"
         ]
-        Resource = "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:*"
+        Resource = "arn:aws:logs:${data.aws_region.current.id}:${data.aws_caller_identity.current.account_id}:*"
       }
     ]
   })
