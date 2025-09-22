@@ -120,14 +120,14 @@ output "compliance_dashboard_name" {
 output "aws_console_links" {
   description = "Useful AWS console links for this environment"
   value = {
-    ec2_instances        = "https://ap-southeast-4.console.aws.amazon.com/ec2/home?region=ap-southeast-4#Instances:"
-    load_balancers       = "https://ap-southeast-4.console.aws.amazon.com/ec2/home?region=ap-southeast-4#LoadBalancers:"
-    cloudfront           = "https://console.aws.amazon.com/cloudfront/v3/home#/distributions"
+    ec2_instances         = "https://ap-southeast-4.console.aws.amazon.com/ec2/home?region=ap-southeast-4#Instances:"
+    load_balancers        = "https://ap-southeast-4.console.aws.amazon.com/ec2/home?region=ap-southeast-4#LoadBalancers:"
+    cloudfront            = "https://console.aws.amazon.com/cloudfront/v3/home#/distributions"
     cloudwatch_dashboards = "https://ap-southeast-4.console.aws.amazon.com/cloudwatch/home?region=ap-southeast-4#dashboards:"
-    s3_buckets          = "https://s3.console.aws.amazon.com/s3/buckets?region=ap-southeast-4"
-    cost_explorer       = "https://console.aws.amazon.com/cost-management/home#/cost-explorer"
-    security_hub        = "https://ap-southeast-4.console.aws.amazon.com/securityhub/home?region=ap-southeast-4#/summary"
-    config_dashboard    = "https://ap-southeast-4.console.aws.amazon.com/config/home?region=ap-southeast-4#/dashboard"
+    s3_buckets            = "https://s3.console.aws.amazon.com/s3/buckets?region=ap-southeast-4"
+    cost_explorer         = "https://console.aws.amazon.com/cost-management/home#/cost-explorer"
+    security_hub          = "https://ap-southeast-4.console.aws.amazon.com/securityhub/home?region=ap-southeast-4#/summary"
+    config_dashboard      = "https://ap-southeast-4.console.aws.amazon.com/config/home?region=ap-southeast-4#/dashboard"
   }
 }
 
@@ -135,7 +135,7 @@ output "aws_console_links" {
 output "staging_environment_summary" {
   description = "Summary of staging environment resources"
   value = {
-    environment                = var.environment
+    environment               = var.environment
     region                    = var.aws_region
     web_application_enabled   = true
     react_hosting_enabled     = var.enable_static_hosting || var.enable_serverless_hosting
@@ -144,8 +144,8 @@ output "staging_environment_summary" {
     cost_optimization_enabled = true
     compliance_enabled        = true
     monthly_budget_limit      = var.monthly_budget_limit
-    instance_type            = var.instance_type
-    min_capacity            = var.min_capacity
-    max_capacity            = var.max_capacity
+    instance_type             = var.instance_type
+    min_capacity              = var.min_capacity
+    max_capacity              = var.max_capacity
   }
 }

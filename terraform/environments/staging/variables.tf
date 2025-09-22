@@ -53,13 +53,13 @@ variable "slack_webhook_url" {
 variable "vpc_cidr" {
   description = "CIDR block for VPC"
   type        = string
-  default     = "10.1.0.0/16"  # Different CIDR for staging
+  default     = "10.1.0.0/16" # Different CIDR for staging
 }
 
 variable "instance_type" {
   description = "EC2 instance type"
   type        = string
-  default     = "t3.small"  # Smaller instances for staging
+  default     = "t3.small" # Smaller instances for staging
 }
 
 variable "min_size" {
@@ -84,7 +84,7 @@ variable "desired_capacity" {
 variable "db_instance_class" {
   description = "RDS instance class"
   type        = string
-  default     = "db.t3.micro"  # Smaller database for staging
+  default     = "db.t3.micro" # Smaller database for staging
 }
 
 variable "db_allocated_storage" {
@@ -96,7 +96,7 @@ variable "db_allocated_storage" {
 variable "db_backup_retention_period" {
   description = "Number of days to retain automated backups"
   type        = number
-  default     = 7  # Shorter retention for staging
+  default     = 7 # Shorter retention for staging
 }
 
 # Additional Tags
@@ -202,7 +202,7 @@ variable "backup_retention_days" {
 variable "backup_schedule_expression" {
   description = "Schedule expression for automated backups"
   type        = string
-  default     = "cron(0 2 * * ? *)"  # Daily at 2 AM UTC
+  default     = "cron(0 2 * * ? *)" # Daily at 2 AM UTC
 }
 
 variable "enable_cross_region_backup" {
@@ -276,7 +276,7 @@ variable "log_retention_days" {
 variable "monthly_budget_limit" {
   description = "Monthly budget limit in USD"
   type        = number
-  default     = 200  # Lower budget for staging
+  default     = 200 # Lower budget for staging
 }
 
 variable "budget_alert_threshold" {
@@ -300,18 +300,18 @@ variable "notification_emails" {
 variable "service_budgets" {
   description = "Service-specific budget configurations"
   type = map(object({
-    service_name     = string
+    service_name    = string
     limit           = number
     alert_threshold = number
   }))
   default = {
     ec2 = {
-      service_name     = "Amazon Elastic Compute Cloud - Compute"
+      service_name    = "Amazon Elastic Compute Cloud - Compute"
       limit           = 50
       alert_threshold = 80
     }
     s3 = {
-      service_name     = "Amazon Simple Storage Service"
+      service_name    = "Amazon Simple Storage Service"
       limit           = 25
       alert_threshold = 80
     }
@@ -333,7 +333,7 @@ variable "cost_anomaly_email" {
 variable "monitored_services" {
   description = "List of AWS services to monitor for cost anomalies"
   type        = list(string)
-  default     = [
+  default = [
     "Amazon Elastic Compute Cloud - Compute",
     "Amazon Simple Storage Service",
     "Amazon Relational Database Service"
@@ -349,7 +349,7 @@ variable "enable_cost_recommendations" {
 variable "cost_optimization_schedule" {
   description = "Schedule expression for cost optimization analysis"
   type        = string
-  default     = "cron(0 9 * * MON *)"  # Every Monday at 9 AM UTC
+  default     = "cron(0 9 * * MON *)" # Every Monday at 9 AM UTC
 }
 
 variable "recommendation_cost_threshold" {
@@ -361,7 +361,7 @@ variable "recommendation_cost_threshold" {
 variable "enable_ri_recommendations" {
   description = "Enable Reserved Instance purchase recommendations"
   type        = bool
-  default     = false  # Disabled for staging
+  default     = false # Disabled for staging
 }
 
 variable "ri_payment_option" {
@@ -422,7 +422,7 @@ variable "compliance_notification_email" {
 variable "compliance_check_schedule" {
   description = "Schedule expression for compliance checks"
   type        = string
-  default     = "cron(0 8 * * MON *)"  # Every Monday at 8 AM UTC
+  default     = "cron(0 8 * * MON *)" # Every Monday at 8 AM UTC
 }
 
 variable "cis_benchmark_version" {
@@ -446,19 +446,19 @@ variable "pci_dss_standard" {
 variable "custom_compliance_rules" {
   description = "Custom compliance rules configuration"
   type = map(object({
-    rule_name           = string
-    description        = string
-    compliance_type    = string
-    resource_types     = list(string)
-    evaluation_mode    = string
+    rule_name       = string
+    description     = string
+    compliance_type = string
+    resource_types  = list(string)
+    evaluation_mode = string
   }))
   default = {
     encryption_check = {
-      rule_name           = "s3-bucket-encryption-enabled"
-      description        = "Checks if S3 buckets have encryption enabled"
-      compliance_type    = "NON_COMPLIANT"
-      resource_types     = ["AWS::S3::Bucket"]
-      evaluation_mode    = "DETECTIVE"
+      rule_name       = "s3-bucket-encryption-enabled"
+      description     = "Checks if S3 buckets have encryption enabled"
+      compliance_type = "NON_COMPLIANT"
+      resource_types  = ["AWS::S3::Bucket"]
+      evaluation_mode = "DETECTIVE"
     }
   }
 }

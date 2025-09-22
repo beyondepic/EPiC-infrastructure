@@ -11,7 +11,7 @@ module "sns_notifications" {
 
   # Email Configuration
   notification_email = var.notification_email
-  application_email  = var.notification_email  # Use same email for staging
+  application_email  = var.notification_email # Use same email for staging
 
   # Slack Configuration (optional)
   slack_webhook_url = var.slack_webhook_url
@@ -19,7 +19,7 @@ module "sns_notifications" {
   # Staging-specific Configuration
   lambda_timeout     = 30
   lambda_memory_size = 128
-  log_retention_days = 7  # Shorter retention for staging
+  log_retention_days = 7 # Shorter retention for staging
 }
 
 # Output topic ARNs for use by other modules
