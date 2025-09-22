@@ -1,0 +1,38 @@
+# Example Terraform Variables for Shared Environment
+# Copy this file to terraform.tfvars and update with your values
+
+# Project Configuration
+project_name = "epic"
+aws_region   = "ap-southeast-4"
+
+# Networking Configuration
+vpc_cidr              = "10.0.0.0/16"
+public_subnet_count   = 3
+private_subnet_count  = 3
+database_subnet_count = 3
+enable_nat_gateway    = true
+nat_gateway_count     = 2
+enable_flow_logs      = true
+
+# Security Configuration
+enable_config                    = true
+enable_guardduty                 = true
+enable_security_hub              = true
+enable_iam_password_policy       = true
+guardduty_s3_protection         = true
+guardduty_kubernetes_protection = false
+guardduty_malware_protection    = true
+
+# Notifications
+notification_email           = "platform-team@your-domain.com"
+enable_slack_notifications   = false
+# slack_webhook_url          = "https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK"
+
+# Additional Tags
+additional_tags = {
+  Owner       = "Platform Team"
+  Purpose     = "Shared Infrastructure"
+  Cost        = "Shared"
+  Terraform   = "true"
+  Contact     = "platform-team@your-domain.com"
+}
