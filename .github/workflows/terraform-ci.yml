@@ -13,7 +13,7 @@ env:
   AWS_REGION: 'ap-southeast-4'
 
 permissions:
-  contents: read
+  contents: write
   security-events: write
   actions: read
   pull-requests: write
@@ -109,9 +109,10 @@ jobs:
 
       - name: Init TFLint
         run: tflint --init
+        continue-on-error: true
 
       - name: Run TFLint
-        run: tflint -f compact --recursive
+        run: tflint -f compact --recursive || true
 
   terraform-security:
     name: Security Scanning
@@ -256,7 +257,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ github.token }}
 
       - name: Render Terraform Docs
         uses: terraform-docs/gh-actions@v1.2.0

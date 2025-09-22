@@ -26,11 +26,13 @@ output "application_topic_name" {
 output "slack_notifier_function_arn" {
   description = "ARN of the Slack notifier Lambda function"
   value       = var.slack_webhook_url != "" ? aws_lambda_function.slack_notifier[0].arn : null
+  sensitive   = true
 }
 
 output "slack_notifier_function_name" {
   description = "Name of the Slack notifier Lambda function"
   value       = var.slack_webhook_url != "" ? aws_lambda_function.slack_notifier[0].function_name : null
+  sensitive   = true
 }
 
 # Topic URLs for publishing
@@ -64,4 +66,5 @@ output "module_info" {
     slack_enabled      = var.slack_webhook_url != ""
     email_notifications = var.notification_email != "" || var.application_email != ""
   }
+  sensitive = true
 }

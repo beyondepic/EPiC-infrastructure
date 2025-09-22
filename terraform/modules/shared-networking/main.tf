@@ -395,7 +395,7 @@ resource "aws_vpc_endpoint" "s3" {
   count = var.enable_vpc_endpoints ? 1 : 0
 
   vpc_id       = aws_vpc.main.id
-  service_name = "com.amazonaws.${data.aws_region.current.name}.s3"
+  service_name = "com.amazonaws.${data.aws_region.current.id}.s3"
 
   vpc_endpoint_type = "Gateway"
   route_table_ids   = [aws_route_table.vpc_endpoints[0].id]
@@ -435,7 +435,7 @@ resource "aws_vpc_endpoint" "dynamodb" {
   count = var.enable_vpc_endpoints ? 1 : 0
 
   vpc_id       = aws_vpc.main.id
-  service_name = "com.amazonaws.${data.aws_region.current.name}.dynamodb"
+  service_name = "com.amazonaws.${data.aws_region.current.id}.dynamodb"
 
   vpc_endpoint_type = "Gateway"
   route_table_ids   = [aws_route_table.vpc_endpoints[0].id]
@@ -512,7 +512,7 @@ resource "aws_vpc_endpoint" "ec2" {
   count = var.enable_vpc_endpoints ? 1 : 0
 
   vpc_id              = aws_vpc.main.id
-  service_name        = "com.amazonaws.${data.aws_region.current.name}.ec2"
+  service_name        = "com.amazonaws.${data.aws_region.current.id}.ec2"
   vpc_endpoint_type   = "Interface"
   subnet_ids          = aws_subnet.private[*].id
   security_group_ids  = [aws_security_group.vpc_endpoints[0].id]
@@ -552,7 +552,7 @@ resource "aws_vpc_endpoint" "logs" {
   count = var.enable_vpc_endpoints ? 1 : 0
 
   vpc_id              = aws_vpc.main.id
-  service_name        = "com.amazonaws.${data.aws_region.current.name}.logs"
+  service_name        = "com.amazonaws.${data.aws_region.current.id}.logs"
   vpc_endpoint_type   = "Interface"
   subnet_ids          = aws_subnet.private[*].id
   security_group_ids  = [aws_security_group.vpc_endpoints[0].id]
@@ -593,7 +593,7 @@ resource "aws_vpc_endpoint" "monitoring" {
   count = var.enable_vpc_endpoints ? 1 : 0
 
   vpc_id              = aws_vpc.main.id
-  service_name        = "com.amazonaws.${data.aws_region.current.name}.monitoring"
+  service_name        = "com.amazonaws.${data.aws_region.current.id}.monitoring"
   vpc_endpoint_type   = "Interface"
   subnet_ids          = aws_subnet.private[*].id
   security_group_ids  = [aws_security_group.vpc_endpoints[0].id]
@@ -632,7 +632,7 @@ resource "aws_vpc_endpoint" "sns" {
   count = var.enable_vpc_endpoints ? 1 : 0
 
   vpc_id              = aws_vpc.main.id
-  service_name        = "com.amazonaws.${data.aws_region.current.name}.sns"
+  service_name        = "com.amazonaws.${data.aws_region.current.id}.sns"
   vpc_endpoint_type   = "Interface"
   subnet_ids          = aws_subnet.private[*].id
   security_group_ids  = [aws_security_group.vpc_endpoints[0].id]
@@ -826,7 +826,7 @@ resource "aws_vpc_endpoint" "cloudtrail" {
   count = var.enable_vpc_endpoints ? 1 : 0
 
   vpc_id              = aws_vpc.main.id
-  service_name        = "com.amazonaws.${data.aws_region.current.name}.cloudtrail"
+  service_name        = "com.amazonaws.${data.aws_region.current.id}.cloudtrail"
   vpc_endpoint_type   = "Interface"
   subnet_ids          = aws_subnet.private[*].id
   security_group_ids  = [aws_security_group.vpc_endpoints[0].id]

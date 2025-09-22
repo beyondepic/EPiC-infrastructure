@@ -20,9 +20,9 @@ module "serverless_react_app" {
 
   # VPC Configuration
   create_vpc_resources = var.use_existing_vpc
-  existing_vpc_id      = var.use_existing_vpc ? var.vpc_id : null
-  existing_alb_subnets = var.use_existing_vpc ? var.public_subnet_ids : null
-  existing_ecs_subnets = var.use_existing_vpc ? var.private_subnet_ids : null
+  vpc_id              = var.use_existing_vpc ? var.vpc_id : null
+  alb_subnets         = var.use_existing_vpc ? var.public_subnet_ids : null
+  ecs_subnets         = var.use_existing_vpc ? var.private_subnet_ids : null
 
   # Security Groups
   create_alb_security_group = var.use_existing_vpc ? false : true

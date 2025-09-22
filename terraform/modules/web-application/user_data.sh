@@ -216,6 +216,11 @@ EOF
 chmod +x /opt/${application_name}/deploy.sh
 
 # Signal that user data script is complete
-/opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource AutoScalingGroup --region ${AWS::Region}
+# Note: CloudFormation signaling not available in EC2 launched via Auto Scaling with Terraform
+# Using CloudWatch custom metrics instead for health signaling
+aws cloudwatch put-metric-data --region $(curl -s http://169.254.169.254/latest/meta-data/placement/region) \
+  --namespace "Custom/UserData" \
+  --metric-data MetricName=UserDataComplete,Value=1,Unit=Count \
+  2>/dev/null || echo "CloudWatch metrics not available"
 
 echo "User data script completed successfully"
