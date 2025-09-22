@@ -207,6 +207,12 @@ variable "additional_tags" {
   default     = {}
 }
 
+variable "force_allow_http" {
+  description = "Force allow HTTP traffic (only for development - not recommended)"
+  type        = bool
+  default     = false
+}
+
 # WAF Configuration
 variable "enable_waf" {
   description = "Enable AWS WAF for Application Load Balancer protection"

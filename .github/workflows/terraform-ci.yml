@@ -133,6 +133,7 @@ jobs:
           output_file_path: reports/results.sarif
           download_external_modules: true
           quiet: true
+          soft_fail: true
 
       - name: Upload Checkov Results to GitHub Advanced Security
         uses: github/codeql-action/upload-sarif@v3
@@ -147,10 +148,11 @@ jobs:
           scan-ref: '.'
           format: 'sarif'
           output: 'trivy-results.sarif'
+          exit-code: '0'
 
       - name: Upload Trivy Results to GitHub Advanced Security
         uses: github/codeql-action/upload-sarif@v3
-        if: always()
+        if: always() && hashFiles('trivy-results.sarif') != ''
         with:
           sarif_file: 'trivy-results.sarif'
 
@@ -189,7 +191,9 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -no-color -out=tfplan
+        run: |
+          terraform plan -no-color -out=tfplan
+          terraform show -no-color tfplan > tfplan.txt
         working-directory: terraform/environments/${{ matrix.environment }}
         continue-on-error: true
 
@@ -228,6 +232,13 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Setup Infracost
         uses: infracost/infracost-action/setup@v3

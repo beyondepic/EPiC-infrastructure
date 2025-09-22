@@ -180,3 +180,39 @@ variable "additional_tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "enable_waf" {
+  description = "Enable WAF for CloudFront distribution"
+  type        = bool
+  default     = true
+}
+
+variable "waf_rate_limit" {
+  description = "Rate limit for WAF rule (requests per 5 minutes)"
+  type        = number
+  default     = 2000
+}
+
+variable "enable_cloudfront_logging" {
+  description = "Enable CloudFront access logging"
+  type        = bool
+  default     = true
+}
+
+variable "log_retention_days" {
+  description = "Number of days to retain CloudFront logs"
+  type        = number
+  default     = 30
+}
+
+variable "enable_origin_failover" {
+  description = "Enable origin failover for CloudFront"
+  type        = bool
+  default     = false
+}
+
+variable "failover_bucket_name" {
+  description = "Name of the failover S3 bucket"
+  type        = string
+  default     = null
+}

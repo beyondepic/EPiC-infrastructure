@@ -303,49 +303,70 @@ resource "aws_lb_target_group" "web" {
   }
 }
 
-# HTTP Listener
+# HTTP Listener - Always redirect to HTTPS for security
 resource "aws_lb_listener" "web_http" {
   load_balancer_arn = aws_lb.web.arn
   port              = "80"
   protocol          = "HTTP"
 
   default_action {
-    type = var.ssl_certificate_arn != null ? "redirect" : "forward"
+    type = "redirect"
 
-    dynamic "redirect" {
-      for_each = var.ssl_certificate_arn != null ? [1] : []
-      content {
-        port        = "443"
-        protocol    = "HTTPS"
-        status_code = "HTTP_301"
-      }
-    }
-
-    dynamic "forward" {
-      for_each = var.ssl_certificate_arn == null ? [1] : []
-      content {
-        target_group {
-          arn = aws_lb_target_group.web.arn
-        }
-      }
+    redirect {
+      port        = "443"
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
     }
   }
 }
 
-# HTTPS Listener (optional)
-resource "aws_lb_listener" "web_https" {
-  count = var.ssl_certificate_arn != null ? 1 : 0
+# Alternative HTTP Listener for environments without HTTPS (only if explicitly disabled)
+resource "aws_lb_listener" "web_http_forward" {
+  count = var.force_allow_http ? 1 : 0
 
   load_balancer_arn = aws_lb.web.arn
-  port              = "443"
-  protocol          = "HTTPS"
-  ssl_policy        = var.ssl_policy
-  certificate_arn   = var.ssl_certificate_arn
+  port              = "8080"
+  protocol          = "HTTP"
 
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.web.arn
   }
+}
+
+# HTTPS Listener (required for security)
+resource "aws_lb_listener" "web_https" {
+  load_balancer_arn = aws_lb.web.arn
+  port              = "443"
+  protocol          = "HTTPS"
+  ssl_policy        = var.ssl_policy
+  certificate_arn   = var.ssl_certificate_arn != null ? var.ssl_certificate_arn : aws_acm_certificate.default[0].arn
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.web.arn
+  }
+}
+
+# Default self-signed certificate if none provided (for development)
+resource "aws_acm_certificate" "default" {
+  count = var.ssl_certificate_arn == null ? 1 : 0
+
+  domain_name       = "${var.project_name}-${var.environment}.local"
+  validation_method = "DNS"
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  tags = merge(
+    {
+      Name        = "${var.project_name}-${var.environment}-default-cert"
+      Environment = var.environment
+      Module      = "web-application"
+    },
+    var.additional_tags
+  )
 }
 
 # Auto Scaling Policies

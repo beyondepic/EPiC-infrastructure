@@ -118,14 +118,183 @@ resource "aws_cloudfront_origin_access_control" "react_static" {
   signing_protocol                  = "sigv4"
 }
 
+# S3 bucket for CloudFront logs
+resource "aws_s3_bucket" "cloudfront_logs" {
+  count = var.hosting_type == "static" && var.enable_cloudfront_logging ? 1 : 0
+
+  bucket        = "${var.app_name}-${var.environment}-cf-logs-${random_string.bucket_suffix.result}"
+  force_destroy = var.enable_force_destroy
+
+  tags = merge(
+    {
+      Name        = "${var.app_name}-${var.environment}-cloudfront-logs"
+      Environment = var.environment
+      Module      = "react-hosting"
+      Type        = "logs"
+    },
+    var.additional_tags
+  )
+}
+
+resource "aws_s3_bucket_public_access_block" "cloudfront_logs" {
+  count = var.hosting_type == "static" && var.enable_cloudfront_logging ? 1 : 0
+
+  bucket = aws_s3_bucket.cloudfront_logs[0].id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "cloudfront_logs" {
+  count = var.hosting_type == "static" && var.enable_cloudfront_logging ? 1 : 0
+
+  bucket = aws_s3_bucket.cloudfront_logs[0].id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}
+
+resource "aws_s3_bucket_lifecycle_configuration" "cloudfront_logs" {
+  count = var.hosting_type == "static" && var.enable_cloudfront_logging ? 1 : 0
+
+  bucket = aws_s3_bucket.cloudfront_logs[0].id
+
+  rule {
+    id = "expire-old-logs"
+
+    filter {
+      prefix = "cf-logs/"
+    }
+
+    expiration {
+      days = var.log_retention_days
+    }
+
+    status = "Enabled"
+  }
+}
+
+# WAF Web ACL for CloudFront
+resource "aws_wafv2_web_acl" "cloudfront" {
+  count = var.hosting_type == "static" && var.enable_waf ? 1 : 0
+
+  name  = "${var.app_name}-${var.environment}-cloudfront-waf"
+  scope = "CLOUDFRONT"
+
+  default_action {
+    allow {}
+  }
+
+  # AWS Managed Core Rule Set
+  rule {
+    name     = "AWSManagedRulesCommonRuleSet"
+    priority = 1
+
+    override_action {
+      none {}
+    }
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesCommonRuleSet"
+        vendor_name = "AWS"
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.app_name}${var.environment}CommonRuleSetMetric"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  # Rate Limiting Rule
+  rule {
+    name     = "RateLimitRule"
+    priority = 2
+
+    action {
+      block {}
+    }
+
+    statement {
+      rate_based_statement {
+        limit              = var.waf_rate_limit
+        aggregate_key_type = "IP"
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${var.app_name}${var.environment}RateLimitMetric"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  visibility_config {
+    cloudwatch_metrics_enabled = true
+    metric_name                = "${var.app_name}${var.environment}CloudFrontWebACL"
+    sampled_requests_enabled   = true
+  }
+
+  tags = merge(
+    {
+      Name        = "${var.app_name}-${var.environment}-cloudfront-waf"
+      Environment = var.environment
+      Module      = "react-hosting"
+    },
+    var.additional_tags
+  )
+}
+
 # CloudFront Distribution for static hosting
 resource "aws_cloudfront_distribution" "react_static" {
   count = var.hosting_type == "static" ? 1 : 0
 
+  web_acl_id = var.enable_waf ? aws_wafv2_web_acl.cloudfront[0].arn : null
+
   origin {
     domain_name              = aws_s3_bucket.react_static[0].bucket_regional_domain_name
     origin_access_control_id = aws_cloudfront_origin_access_control.react_static[0].id
-    origin_id                = "S3-${aws_s3_bucket.react_static[0].bucket}"
+    origin_id                = "S3-Primary-${aws_s3_bucket.react_static[0].bucket}"
+  }
+
+  # Origin group for failover (optional)
+  dynamic "origin_group" {
+    for_each = var.enable_origin_failover ? [1] : []
+    content {
+      origin_id = "S3-OriginGroup"
+
+      failover_criteria {
+        status_codes = [403, 404, 500, 502, 503, 504]
+      }
+
+      member {
+        origin_id = "S3-Primary-${aws_s3_bucket.react_static[0].bucket}"
+      }
+
+      member {
+        origin_id = "S3-Failover-${aws_s3_bucket.react_static[0].bucket}"
+      }
+    }
+  }
+
+  # Failover origin (if enabled)
+  dynamic "origin" {
+    for_each = var.enable_origin_failover && var.failover_bucket_name != null ? [1] : []
+    content {
+      domain_name = "${var.failover_bucket_name}.s3.amazonaws.com"
+      origin_id   = "S3-Failover-${aws_s3_bucket.react_static[0].bucket}"
+
+      s3_origin_config {
+        origin_access_identity = ""
+      }
+    }
   }
 
   enabled             = true
@@ -138,7 +307,7 @@ resource "aws_cloudfront_distribution" "react_static" {
   default_cache_behavior {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = "S3-${aws_s3_bucket.react_static[0].bucket}"
+    target_origin_id = var.enable_origin_failover ? "S3-OriginGroup" : "S3-Primary-${aws_s3_bucket.react_static[0].bucket}"
 
     forwarded_values {
       query_string = false
@@ -196,9 +365,19 @@ resource "aws_cloudfront_distribution" "react_static" {
 
   price_class = var.cloudfront_price_class
 
+  # Logging configuration
+  dynamic "logging_config" {
+    for_each = var.enable_cloudfront_logging ? [1] : []
+    content {
+      include_cookies = false
+      bucket          = aws_s3_bucket.cloudfront_logs[0].bucket_domain_name
+      prefix          = "cf-logs/"
+    }
+  }
+
   restrictions {
     geo_restriction {
-      restriction_type = var.geo_restriction_type
+      restriction_type = var.geo_restriction_type != "" ? var.geo_restriction_type : "none"
       locations        = var.geo_restriction_locations
     }
   }
