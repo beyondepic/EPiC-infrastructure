@@ -500,15 +500,6 @@ resource "aws_cloudwatch_dashboard" "compliance" {
       }
     ]
   })
-
-  tags = merge(
-    {
-      Name        = "${var.project_name}-${var.environment}-compliance-dashboard"
-      Environment = var.environment
-      Module      = "compliance-monitoring"
-    },
-    var.additional_tags
-  )
 }
 
 # CloudWatch alarms for compliance violations
@@ -557,15 +548,6 @@ resource "aws_config_remediation_configuration" "s3_bucket_ssl_requests_only" {
     name         = "Message"
     static_value = "S3 bucket SSL requests compliance violation detected"
   }
-
-  tags = merge(
-    {
-      Name        = "${var.project_name}-${var.environment}-s3-ssl-remediation"
-      Environment = var.environment
-      Module      = "compliance-monitoring"
-    },
-    var.additional_tags
-  )
 }
 
 # CloudWatch log group for compliance checker Lambda
