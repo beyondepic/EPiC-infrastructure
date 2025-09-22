@@ -1,0 +1,1 @@
+{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"security_baseline","Source":"../../modules/security-baseline","Dir":"../../modules/security-baseline"},{"Key":"shared_networking","Source":"../../modules/shared-networking","Dir":"../../modules/shared-networking"},{"Key":"shared_notifications","Source":"../../modules/sns-notifications","Dir":"../../modules/sns-notifications"}]}

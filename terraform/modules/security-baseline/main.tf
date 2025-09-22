@@ -9,6 +9,12 @@ resource "aws_cloudtrail" "main" {
   name           = "${var.project_name}-${var.environment}-cloudtrail"
   s3_bucket_name = aws_s3_bucket.cloudtrail.bucket
 
+  # Security enhancement: Enable log file validation (CKV_AWS_36)
+  enable_log_file_validation = true
+
+  # Security enhancement: Use KMS encryption for CloudTrail logs (CKV_AWS_35)
+  kms_key_id = aws_kms_key.cloudtrail.arn
+
   event_selector {
     read_write_type                 = "All"
     include_management_events       = true
@@ -20,7 +26,7 @@ resource "aws_cloudtrail" "main" {
     }
   }
 
-  depends_on = [aws_s3_bucket_policy.cloudtrail]
+  depends_on = [aws_s3_bucket_policy.cloudtrail, aws_kms_key.cloudtrail]
 
   tags = {
     Name        = "${var.project_name}-${var.environment}-cloudtrail"

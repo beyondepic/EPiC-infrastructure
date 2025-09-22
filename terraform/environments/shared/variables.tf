@@ -126,9 +126,9 @@ variable "additional_tags" {
   description = "Additional tags to apply to all resources"
   type        = map(string)
   default = {
-    Owner       = "Platform Team"
-    Purpose     = "Shared Infrastructure"
-    Cost        = "Shared"
-    Terraform   = "true"
+    Owner     = "Platform Team"
+    Purpose   = "Shared Infrastructure"
+    Cost      = "Shared"
+    Terraform = "true"
   }
 }
