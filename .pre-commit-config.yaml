@@ -1,0 +1,173 @@
+# Pre-commit hooks configuration for EPiC Infrastructure
+# https://pre-commit.com/
+# https://github.com/antonbabenko/pre-commit-terraform
+
+default_install_hook_types: [pre-commit, commit-msg, pre-push]
+default_stages: [pre-commit]
+
+repos:
+  # General code quality hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+        name: Trim Trailing Whitespace
+      - id: end-of-file-fixer
+        name: Fix End of Files
+      - id: check-merge-conflict
+        name: Check for Merge Conflicts
+      - id: check-added-large-files
+        name: Check for Large Files
+        args: ['--maxkb=1000']
+      - id: check-case-conflict
+        name: Check for Case Conflicts
+      - id: check-json
+        name: Check JSON Syntax
+      - id: check-yaml
+        name: Check YAML Syntax
+        args: ['--allow-multiple-documents']
+      - id: check-toml
+        name: Check TOML Syntax
+      - id: check-xml
+        name: Check XML Syntax
+      - id: mixed-line-ending
+        name: Mixed Line Ending
+      - id: pretty-format-json
+        name: Pretty Format JSON
+        args: ['--autofix']
+
+  # Terraform specific hooks
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.96.1
+    hooks:
+      - id: terraform_fmt
+        name: Terraform Format
+        description: Rewrites all Terraform configuration files to a canonical format
+        args:
+          - --args=-recursive
+
+      - id: terraform_validate
+        name: Terraform Validate
+        description: Validates all Terraform configuration files
+        args:
+          - --args=-json
+          - --args=-no-color
+
+      - id: terraform_docs
+        name: Terraform Docs
+        description: Inserts input and output documentation into README.md
+        args:
+          - '--args=--lockfile=false'
+          - '--args=--sort-by=required'
+
+      - id: terraform_tflint
+        name: Terraform TFLint
+        description: Validates all Terraform configuration files with TFLint
+        args:
+          - '--args=--only=terraform_deprecated_interpolation'
+          - '--args=--only=terraform_deprecated_index'
+          - '--args=--only=terraform_unused_declarations'
+          - '--args=--only=terraform_comment_syntax'
+          - '--args=--only=terraform_documented_outputs'
+          - '--args=--only=terraform_documented_variables'
+          - '--args=--only=terraform_typed_variables'
+          - '--args=--only=terraform_module_pinned_source'
+          - '--args=--only=terraform_naming_convention'
+          - '--args=--only=terraform_required_version'
+          - '--args=--only=terraform_required_providers'
+
+      - id: terraform_trivy
+        name: Terraform Trivy
+        description: Static analysis of Terraform templates to spot potential security issues
+        args:
+          - >
+            --args=--severity HIGH,CRITICAL
+            --format table
+            --exit-code 1
+
+      - id: checkov
+        name: Checkov Security Scan
+        description: Runs Checkov on Terraform configuration files
+        args:
+          - --args=--quiet
+          - --args=--compact
+          - --args=--framework terraform
+
+      - id: terraform_providers_lock
+        name: Lock Terraform Providers
+        description: Updates provider versions in .terraform.lock.hcl files
+        args:
+          - --args=-platform=windows_amd64
+          - --args=-platform=darwin_amd64
+          - --args=-platform=darwin_arm64
+          - --args=-platform=linux_amd64
+
+  # Secrets detection
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
+        name: Detect Secrets
+        description: Detects secrets within a repository
+        args: ['--baseline', '.secrets.baseline']
+        exclude: package.lock.json
+
+  # Markdown linting
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.42.0
+    hooks:
+      - id: markdownlint
+        name: Markdown Lint
+        description: Checks the markdown syntax
+        args: ['--fix']
+        files: \.(md|mdown|markdown)$
+
+  # YAML linting
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: v1.35.1
+    hooks:
+      - id: yamllint
+        name: YAML Lint
+        description: Check YAML syntax and formatting
+        args: ['-d', 'relaxed']
+
+  # Git commit message linting
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v3.4.0
+    hooks:
+      - id: conventional-pre-commit
+        name: Conventional Commit
+        description: Ensures commit messages follow conventional commit format
+        stages: [commit-msg]
+
+  # Shell script linting
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.10.0.1
+    hooks:
+      - id: shellcheck
+        name: Shell Check
+        description: Check shell scripts with shellcheck
+        files: \.(sh|bash|ksh|zsh)$
+
+  # Dockerfile linting
+  - repo: https://github.com/hadolint/hadolint
+    rev: v2.12.0
+    hooks:
+      - id: hadolint
+        name: Hadolint
+        description: Lint Dockerfiles
+        files: Dockerfile.*
+
+# Configuration for specific tools
+ci:
+  autofix_commit_msg: |
+    🤖 [pre-commit.ci] auto fixes from pre-commit hooks
+
+    for more information, see https://pre-commit.ci
+  autofix_prs: true
+  autoupdate_branch: ''
+  autoupdate_commit_msg: |
+    🤖 [pre-commit.ci] pre-commit autoupdate
+  autoupdate_schedule: weekly
+  skip: [terraform_providers_lock, terraform_trivy]
+  submodules: false

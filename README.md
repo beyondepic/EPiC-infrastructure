@@ -14,9 +14,11 @@ The EPiC Infrastructure Management System is a centralized Terraform-based infra
 - ✅ **Multi-project support** - Shared infrastructure across EPiC projects
 - ✅ **Environment isolation** - Staging, production, and shared resources
 - ✅ **Reusable modules** - Standardized AWS resource patterns
-- ✅ **Automated deployment** - GitHub Actions CI/CD integration
-- ✅ **Cost optimization** - Shared resources and right-sizing
-- ✅ **Security by default** - Built-in security best practices
+- ✅ **Automated CI/CD** - GitHub Actions with comprehensive testing
+- ✅ **Security by default** - WAF, VPC endpoints, security scanning
+- ✅ **Code quality** - Pre-commit hooks, linting, validation
+- ✅ **Integration testing** - Terratest with Go for robust testing
+- ✅ **Cost optimization** - Automated cost analysis and monitoring
 
 ---
 
@@ -62,8 +64,15 @@ EPiC-infrastructure/
 
 ### Prerequisites
 - AWS CLI configured with appropriate permissions
-- Terraform 1.6+ installed
+- Terraform 1.13.3+ installed
+- Go 1.21+ for running tests
 - GitHub CLI (gh) for repository operations
+
+### Automated Setup
+```bash
+# Run the automated development setup
+./scripts/setup/dev-setup.sh
+```
 
 ### 1. Clone Repository
 ```bash
@@ -220,42 +229,50 @@ Each environment has its own:
 
 ## 🛠️ Development Workflow
 
-### Making Infrastructure Changes
+### DevOps-Ready Development Process
 
-1. **Create Feature Branch**
+1. **Setup Development Environment**
    ```bash
-   git checkout -b feature/add-sns-module
+   # Automated setup with latest tools
+   ./scripts/setup/dev-setup.sh
+
+   # Install pre-commit hooks
+   pre-commit install
    ```
 
-2. **Develop Module**
+2. **Create Feature Branch**
    ```bash
-   # Create or modify Terraform modules
-   cd terraform/modules/sns-notifications
-   # Edit main.tf, variables.tf, outputs.tf
+   git checkout -b feature/add-waf-protection
    ```
 
-3. **Test Locally**
+3. **Develop with Quality Checks**
    ```bash
-   # Validate Terraform syntax
-   terraform validate
+   # Pre-commit runs automatically on commit
+   # - Terraform formatting
+   # - Security scanning (Checkov, Trivy)
+   # - Linting (TFLint)
+   # - Secrets detection
 
-   # Plan changes
-   terraform plan
+   git commit -m "feat: add WAF protection to ALB"
    ```
 
-4. **Submit PR**
+4. **Automated CI/CD Pipeline**
    ```bash
-   git add .
-   git commit -m "feat: add SNS notifications module"
-   git push origin feature/add-sns-module
+   git push origin feature/add-waf-protection
    gh pr create
    ```
 
-5. **Review & Deploy**
-   - GitHub Actions runs `terraform plan`
-   - Team reviews PR and Terraform plan
-   - Merge triggers deployment to staging
-   - Manual approval for production deployment
+   **GitHub Actions automatically runs:**
+   - ✅ Terraform validation across all modules
+   - ✅ Security scanning with SARIF upload
+   - ✅ Cost estimation with Infracost
+   - ✅ Integration tests with Terratest
+   - ✅ Documentation updates
+
+5. **Deployment Process**
+   - **Staging**: Auto-deploy on merge to `develop`
+   - **Production**: Manual approval required for `main`
+   - **Monitoring**: Slack notifications and CloudWatch alarms
 
 ---
 
