@@ -21,16 +21,7 @@ output "service_budget_arns" {
   value       = { for k, v in aws_budgets_budget.service_budgets : k => v.arn }
 }
 
-# Cost Anomaly Detection
-output "cost_anomaly_detector_arn" {
-  description = "ARN of the cost anomaly detector"
-  value       = aws_ce_anomaly_detector.cost_anomaly.arn
-}
-
-output "cost_anomaly_subscription_arn" {
-  description = "ARN of the cost anomaly subscription"
-  value       = aws_ce_anomaly_subscription.cost_anomaly.arn
-}
+# Note: Cost anomaly detection outputs removed as resources are not available in Terraform AWS provider
 
 # Lambda Function Outputs
 output "cost_optimizer_function_name" {

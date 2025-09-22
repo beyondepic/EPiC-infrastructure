@@ -15,7 +15,7 @@ resource "aws_budgets_budget" "monthly_cost" {
 
   cost_filter {
     name   = "TagKeyValue"
-    values = var.cost_allocation_tags
+    values = [for k, v in var.cost_allocation_tags : "${k}$${v}"]
   }
 
   notification {
@@ -64,7 +64,7 @@ resource "aws_budgets_budget" "service_budgets" {
 
   cost_filter {
     name   = "TagKeyValue"
-    values = var.cost_allocation_tags
+    values = [for k, v in var.cost_allocation_tags : "${k}$${v}"]
   }
 
   notification {
