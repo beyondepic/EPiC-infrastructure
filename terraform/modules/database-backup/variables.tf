@@ -70,43 +70,9 @@ variable "replica_kms_key_id" {
   default     = null
 }
 
-# Backup filtering
-variable "db_instance_tags" {
-  description = "Tags to filter RDS instances for backup (empty means backup all)"
-  type        = map(string)
-  default     = {}
-}
-
-variable "db_cluster_tags" {
-  description = "Tags to filter RDS clusters for backup (empty means backup all)"
-  type        = map(string)
-  default     = {}
-}
-
-variable "excluded_instance_ids" {
-  description = "List of RDS instance IDs to exclude from backup"
-  type        = list(string)
-  default     = []
-}
-
-variable "excluded_cluster_ids" {
-  description = "List of RDS cluster IDs to exclude from backup"
-  type        = list(string)
-  default     = []
-}
-
-# Lambda configuration
-variable "lambda_timeout" {
-  description = "Lambda function timeout in seconds"
-  type        = number
-  default     = 300
-}
-
-variable "lambda_memory_size" {
-  description = "Lambda function memory size in MB"
-  type        = number
-  default     = 256
-}
+# Backup filtering and Lambda configuration
+# Note: These variables are reserved for future use when implementing
+# more advanced backup filtering and Lambda configuration options
 
 variable "additional_tags" {
   description = "Additional tags to apply to resources"

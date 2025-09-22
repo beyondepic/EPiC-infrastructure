@@ -1,7 +1,6 @@
 # Compliance Monitoring Module
 # Implements comprehensive compliance monitoring using AWS Config, Security Hub, and custom rules
 
-data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
 # AWS Config Rules for Security and Compliance

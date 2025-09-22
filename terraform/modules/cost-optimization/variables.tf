@@ -158,12 +158,6 @@ variable "s3_glacier_transition_days" {
   default     = 90
 }
 
-variable "s3_deep_archive_transition_days" {
-  description = "Days after which objects transition to Deep Archive"
-  type        = number
-  default     = 180
-}
-
 # Lambda Configuration
 variable "lambda_memory_size" {
   description = "Memory size for cost optimization Lambda function"
@@ -190,19 +184,7 @@ variable "enable_rightsizing_recommendations" {
   default     = true
 }
 
-variable "rightsizing_lookback_days" {
-  description = "Number of days to look back for utilization data"
-  type        = number
-  default     = 14
-}
-
 # Cost Dashboard Configuration
-variable "enable_cost_dashboard" {
-  description = "Enable cost monitoring dashboard"
-  type        = bool
-  default     = true
-}
-
 variable "dashboard_widgets" {
   description = "List of widgets to include in cost dashboard"
   type        = list(string)
