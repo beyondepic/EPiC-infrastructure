@@ -1,7 +1,6 @@
 # Monitoring and Alerting Module
 # Creates CloudWatch dashboards, alarms, and comprehensive monitoring
 
-data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
 # CloudWatch Dashboard for Infrastructure Overview

@@ -136,56 +136,15 @@ variable "enable_disk_monitoring" {
   default     = false
 }
 
-variable "enable_security_dashboard" {
-  description = "Enable security-specific dashboard"
-  type        = bool
-  default     = true
-}
-
-variable "enable_application_dashboard" {
-  description = "Enable application-specific dashboard"
-  type        = bool
-  default     = true
-}
-
-variable "enable_custom_metrics" {
-  description = "Enable custom application metrics"
-  type        = bool
-  default     = false
-}
-
-# CloudWatch Agent Configuration
-variable "cloudwatch_agent_config" {
-  description = "CloudWatch agent configuration for custom metrics"
-  type        = map(any)
-  default     = {}
-}
-
-# Log Retention
-variable "log_retention_days" {
-  description = "Number of days to retain CloudWatch logs"
-  type        = number
-  default     = 14
-}
-
-# Cost Monitoring
-variable "enable_cost_alerts" {
-  description = "Enable cost monitoring and alerts"
-  type        = bool
-  default     = false
-}
-
-variable "monthly_cost_budget" {
-  description = "Monthly cost budget for alerts (USD)"
-  type        = number
-  default     = 100
-}
-
-variable "cost_alert_threshold" {
-  description = "Cost alert threshold (percentage of budget)"
-  type        = number
-  default     = 80
-}
+# Advanced monitoring features - reserved for future implementation
+# - enable_security_dashboard: Security-specific dashboard
+# - enable_application_dashboard: Application-specific dashboard
+# - enable_custom_metrics: Custom application metrics
+# - cloudwatch_agent_config: CloudWatch agent configuration
+# - log_retention_days: Number of days to retain CloudWatch logs
+# - enable_cost_alerts: Cost monitoring and alerts
+# - monthly_cost_budget: Monthly cost budget for alerts
+# - cost_alert_threshold: Cost alert threshold percentage
 
 variable "additional_tags" {
   description = "Additional tags to apply to resources"
