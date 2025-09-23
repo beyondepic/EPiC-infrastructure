@@ -36,12 +36,6 @@ variable "notification_email" {
   default     = ""
 }
 
-variable "application_email" {
-  description = "Email address for application notifications"
-  type        = string
-  default     = ""
-}
-
 variable "slack_webhook_url" {
   description = "Slack webhook URL for notifications"
   type        = string
@@ -50,12 +44,6 @@ variable "slack_webhook_url" {
 }
 
 # Staging-specific Variables
-variable "vpc_cidr" {
-  description = "CIDR block for VPC"
-  type        = string
-  default     = "10.1.0.0/16" # Different CIDR for staging
-}
-
 variable "instance_type" {
   description = "EC2 instance type"
   type        = string
@@ -69,11 +57,7 @@ variable "desired_capacity" {
 }
 
 # Database Variables
-variable "db_allocated_storage" {
-  description = "Allocated storage for RDS instance in GB"
-  type        = number
-  default     = 20
-}
+# Note: Database configuration variables reserved for future implementation
 
 # Additional Tags
 variable "additional_tags" {

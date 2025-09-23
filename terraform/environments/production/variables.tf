@@ -50,22 +50,10 @@ variable "slack_webhook_url" {
 }
 
 # Production-specific Variables
-variable "vpc_cidr" {
-  description = "CIDR block for VPC"
-  type        = string
-  default     = "10.0.0.0/16" # Standard CIDR for production
-}
-
 variable "instance_type" {
   description = "EC2 instance type"
   type        = string
   default     = "t3.medium" # Larger instances for production
-}
-
-variable "min_size" {
-  description = "Minimum number of instances in Auto Scaling Group"
-  type        = number
-  default     = 2 # High availability
 }
 
 variable "max_size" {
@@ -81,29 +69,7 @@ variable "desired_capacity" {
 }
 
 # Database Variables
-variable "db_instance_class" {
-  description = "RDS instance class"
-  type        = string
-  default     = "db.t3.small" # Production-sized database
-}
-
-variable "db_max_allocated_storage" {
-  description = "Maximum allocated storage for RDS auto scaling in GB"
-  type        = number
-  default     = 1000
-}
-
-variable "db_backup_window" {
-  description = "Preferred backup window"
-  type        = string
-  default     = "03:00-04:00" # Early morning UTC
-}
-
-variable "db_maintenance_window" {
-  description = "Preferred maintenance window"
-  type        = string
-  default     = "sun:04:00-sun:05:00" # Sunday early morning UTC
-}
+# Note: Database configuration variables reserved for future implementation
 
 # Security Variables
 variable "enable_deletion_protection" {
@@ -119,11 +85,7 @@ variable "enable_point_in_time_recovery" {
 }
 
 # Cost Management
-variable "budget_limit" {
-  description = "Monthly budget limit in USD"
-  type        = number
-  default     = 1000 # Higher budget for production
-}
+# Note: Budget configuration reserved for future implementation
 
 # Monitoring and Alerting
 # Note: Monitoring thresholds reserved for future implementation
