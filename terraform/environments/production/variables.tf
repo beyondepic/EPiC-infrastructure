@@ -87,22 +87,10 @@ variable "db_instance_class" {
   default     = "db.t3.small" # Production-sized database
 }
 
-variable "db_allocated_storage" {
-  description = "Allocated storage for RDS instance in GB"
-  type        = number
-  default     = 100
-}
-
 variable "db_max_allocated_storage" {
   description = "Maximum allocated storage for RDS auto scaling in GB"
   type        = number
   default     = 1000
-}
-
-variable "db_backup_retention_period" {
-  description = "Number of days to retain automated backups"
-  type        = number
-  default     = 30 # Longer retention for production
 }
 
 variable "db_backup_window" {
@@ -130,12 +118,6 @@ variable "enable_point_in_time_recovery" {
   default     = true
 }
 
-variable "enable_performance_insights" {
-  description = "Enable Performance Insights for RDS"
-  type        = bool
-  default     = true
-}
-
 # Cost Management
 variable "budget_limit" {
   description = "Monthly budget limit in USD"
@@ -144,29 +126,7 @@ variable "budget_limit" {
 }
 
 # Monitoring and Alerting
-variable "enable_detailed_monitoring" {
-  description = "Enable detailed CloudWatch monitoring"
-  type        = bool
-  default     = true
-}
-
-variable "alarm_cpu_threshold" {
-  description = "CPU utilization threshold for alarms"
-  type        = number
-  default     = 80
-}
-
-variable "alarm_memory_threshold" {
-  description = "Memory utilization threshold for alarms"
-  type        = number
-  default     = 85
-}
-
-variable "alarm_disk_threshold" {
-  description = "Disk utilization threshold for alarms"
-  type        = number
-  default     = 85
-}
+# Note: Monitoring thresholds reserved for future implementation
 
 # Additional Tags
 variable "additional_tags" {

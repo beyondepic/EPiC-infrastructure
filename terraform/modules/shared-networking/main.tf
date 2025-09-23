@@ -1,6 +1,17 @@
 # Shared Networking Infrastructure Module
 # Creates VPC, subnets, security groups, and networking components
 
+terraform {
+  required_version = ">= 1.6"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 6.14.0"
+    }
+  }
+}
+
 data "aws_availability_zones" "available" {
   state = "available"
 }

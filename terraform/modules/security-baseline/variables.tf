@@ -86,8 +86,3 @@ variable "password_reuse_prevention" {
   default     = 12
 }
 
-variable "additional_tags" {
-  description = "Additional tags to apply to resources"
-  type        = map(string)
-  default     = {}
-}

@@ -90,11 +90,6 @@ variable "flow_logs_retention_days" {
   }
 }
 
-variable "additional_tags" {
-  description = "Additional tags to apply to resources"
-  type        = map(string)
-  default     = {}
-}
 
 # VPC Endpoints Configuration
 variable "enable_vpc_endpoints" {
