@@ -46,23 +46,7 @@ variable "use_existing_vpc" {
   default     = true
 }
 
-variable "vpc_id" {
-  description = "ID of the existing VPC"
-  type        = string
-  default     = null
-}
-
-variable "public_subnet_ids" {
-  description = "List of public subnet IDs for ALB"
-  type        = list(string)
-  default     = []
-}
-
-variable "private_subnet_ids" {
-  description = "List of private subnet IDs for ECS"
-  type        = list(string)
-  default     = []
-}
+# Network configuration - reserved for future VPC integration
 
 variable "alb_security_group_id" {
   description = "Security group ID for the ALB"

@@ -119,37 +119,11 @@ variable "enable_ri_recommendations" {
   default     = true
 }
 
-variable "ri_payment_option" {
-  description = "Reserved Instance payment option"
-  type        = string
-  default     = "PARTIAL_UPFRONT"
-  validation {
-    condition     = contains(["NO_UPFRONT", "PARTIAL_UPFRONT", "ALL_UPFRONT"], var.ri_payment_option)
-    error_message = "Payment option must be NO_UPFRONT, PARTIAL_UPFRONT, or ALL_UPFRONT."
-  }
-}
-
-variable "ri_term_years" {
-  description = "Reserved Instance term in years"
-  type        = string
-  default     = "ONE_YEAR"
-  validation {
-    condition     = contains(["ONE_YEAR", "THREE_YEARS"], var.ri_term_years)
-    error_message = "Term must be ONE_YEAR or THREE_YEARS."
-  }
-}
-
 # S3 Cost Optimization
 variable "enable_s3_lifecycle_recommendations" {
   description = "Enable S3 lifecycle policy recommendations"
   type        = bool
   default     = true
-}
-
-variable "s3_ia_transition_days" {
-  description = "Days after which objects transition to IA storage"
-  type        = number
-  default     = 30
 }
 
 variable "s3_glacier_transition_days" {
@@ -159,12 +133,6 @@ variable "s3_glacier_transition_days" {
 }
 
 # Lambda Configuration
-variable "lambda_memory_size" {
-  description = "Memory size for cost optimization Lambda function"
-  type        = number
-  default     = 256
-}
-
 variable "lambda_timeout" {
   description = "Timeout for cost optimization Lambda function"
   type        = number
@@ -185,11 +153,7 @@ variable "enable_rightsizing_recommendations" {
 }
 
 # Cost Dashboard Configuration
-variable "dashboard_widgets" {
-  description = "List of widgets to include in cost dashboard"
-  type        = list(string)
-  default     = ["billing", "service_costs", "usage_hours"]
-}
+# Note: dashboard_widgets variable reserved for future use
 
 variable "additional_tags" {
   description = "Additional tags to apply to resources"

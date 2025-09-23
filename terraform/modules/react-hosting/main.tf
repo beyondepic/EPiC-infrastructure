@@ -3,9 +3,7 @@
 # 1. AWS-IA Serverless Streamlit App module (adapted for React/Node.js)
 # 2. Traditional S3 + CloudFront static hosting
 
-# Data sources
-data "aws_caller_identity" "current" {}
-data "aws_region" "current" {}
+# Data sources - reserved for future use
 
 # Option 1: Serverless hosting using AWS-IA module (for dynamic React apps)
 module "serverless_react_app" {
