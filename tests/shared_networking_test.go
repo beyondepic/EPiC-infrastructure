@@ -2,6 +2,7 @@ package tests
 
 import (
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/gruntwork-io/terratest/modules/aws"
@@ -12,6 +13,11 @@ import (
 
 func TestSharedNetworkingModule(t *testing.T) {
 	t.Parallel()
+
+	// Skip if AWS credentials are not configured
+	if os.Getenv("AWS_ACCESS_KEY_ID") == "" {
+		t.Skip("Skipping test: AWS credentials not configured")
+	}
 
 	// Pick a random AWS region to test in
 	awsRegion := aws.GetRandomStableRegion(t, nil, nil)
@@ -107,6 +113,11 @@ func TestSharedNetworkingModule(t *testing.T) {
 
 func TestSharedNetworkingModuleMinimal(t *testing.T) {
 	t.Parallel()
+
+	// Skip if AWS credentials are not configured
+	if os.Getenv("AWS_ACCESS_KEY_ID") == "" {
+		t.Skip("Skipping test: AWS credentials not configured")
+	}
 
 	// Pick a random AWS region to test in
 	awsRegion := aws.GetRandomStableRegion(t, nil, nil)
@@ -215,6 +226,11 @@ func TestSharedNetworkingModuleValidation(t *testing.T) {
 
 func TestSharedNetworkingModuleNaming(t *testing.T) {
 	t.Parallel()
+
+	// Skip if AWS credentials are not configured
+	if os.Getenv("AWS_ACCESS_KEY_ID") == "" {
+		t.Skip("Skipping test: AWS credentials not configured")
+	}
 
 	awsRegion := aws.GetRandomStableRegion(t, nil, nil)
 	uniqueID := random.UniqueId()

@@ -2,6 +2,7 @@ package tests
 
 import (
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/gruntwork-io/terratest/modules/aws"
@@ -12,6 +13,11 @@ import (
 
 func TestWebApplicationModule(t *testing.T) {
 	t.Parallel()
+
+	// Skip if AWS credentials are not configured
+	if os.Getenv("AWS_ACCESS_KEY_ID") == "" {
+		t.Skip("Skipping test: AWS credentials not configured")
+	}
 
 	// Pick a random AWS region to test in
 	awsRegion := aws.GetRandomStableRegion(t, nil, nil)
@@ -138,6 +144,11 @@ func TestWebApplicationModule(t *testing.T) {
 
 func TestWebApplicationModuleWithoutWAF(t *testing.T) {
 	t.Parallel()
+
+	// Skip if AWS credentials are not configured
+	if os.Getenv("AWS_ACCESS_KEY_ID") == "" {
+		t.Skip("Skipping test: AWS credentials not configured")
+	}
 
 	awsRegion := aws.GetRandomStableRegion(t, nil, nil)
 	uniqueID := random.UniqueId()
@@ -311,6 +322,11 @@ func TestWebApplicationModuleValidation(t *testing.T) {
 
 func TestWebApplicationModuleWithGeographicBlocking(t *testing.T) {
 	t.Parallel()
+
+	// Skip if AWS credentials are not configured
+	if os.Getenv("AWS_ACCESS_KEY_ID") == "" {
+		t.Skip("Skipping test: AWS credentials not configured")
+	}
 
 	awsRegion := aws.GetRandomStableRegion(t, nil, nil)
 	uniqueID := random.UniqueId()

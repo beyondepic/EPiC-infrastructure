@@ -1,9 +1,6 @@
 # Cost Optimization Module
 # Implements cost monitoring, budgets, and optimization recommendations
 
-data "aws_caller_identity" "current" {}
-data "aws_region" "current" {}
-
 # Cost Budget for overall spending
 resource "aws_budgets_budget" "monthly_cost" {
   name              = "${var.project_name}-${var.environment}-monthly-budget"

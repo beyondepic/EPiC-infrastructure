@@ -62,18 +62,6 @@ variable "instance_type" {
   default     = "t3.small" # Smaller instances for staging
 }
 
-variable "min_size" {
-  description = "Minimum number of instances in Auto Scaling Group"
-  type        = number
-  default     = 1
-}
-
-variable "max_size" {
-  description = "Maximum number of instances in Auto Scaling Group"
-  type        = number
-  default     = 2
-}
-
 variable "desired_capacity" {
   description = "Desired number of instances in Auto Scaling Group"
   type        = number
@@ -81,22 +69,10 @@ variable "desired_capacity" {
 }
 
 # Database Variables
-variable "db_instance_class" {
-  description = "RDS instance class"
-  type        = string
-  default     = "db.t3.micro" # Smaller database for staging
-}
-
 variable "db_allocated_storage" {
   description = "Allocated storage for RDS instance in GB"
   type        = number
   default     = 20
-}
-
-variable "db_backup_retention_period" {
-  description = "Number of days to retain automated backups"
-  type        = number
-  default     = 7 # Shorter retention for staging
 }
 
 # Additional Tags

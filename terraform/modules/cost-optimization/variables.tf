@@ -112,44 +112,11 @@ variable "recommendation_utilization_threshold" {
   default     = 20
 }
 
-# Reserved Instance Configuration
-variable "enable_ri_recommendations" {
-  description = "Enable Reserved Instance purchase recommendations"
-  type        = bool
-  default     = true
-}
-
-# S3 Cost Optimization
-variable "enable_s3_lifecycle_recommendations" {
-  description = "Enable S3 lifecycle policy recommendations"
-  type        = bool
-  default     = true
-}
-
-variable "s3_glacier_transition_days" {
-  description = "Days after which objects transition to Glacier"
-  type        = number
-  default     = 90
-}
-
 # Lambda Configuration
-variable "lambda_timeout" {
-  description = "Timeout for cost optimization Lambda function"
-  type        = number
-  default     = 300
-}
-
 variable "log_retention_days" {
   description = "CloudWatch log retention period in days"
   type        = number
   default     = 14
-}
-
-# Right-sizing Configuration
-variable "enable_rightsizing_recommendations" {
-  description = "Enable EC2 right-sizing recommendations"
-  type        = bool
-  default     = true
 }
 
 # Cost Dashboard Configuration
