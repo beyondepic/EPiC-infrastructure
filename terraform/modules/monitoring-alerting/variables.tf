@@ -146,8 +146,4 @@ variable "enable_disk_monitoring" {
 # - monthly_cost_budget: Monthly cost budget for alerts
 # - cost_alert_threshold: Cost alert threshold percentage
 
-variable "additional_tags" {
-  description = "Additional tags to apply to resources"
-  type        = map(string)
-  default     = {}
-}
+# Additional tags - reserved for future implementation

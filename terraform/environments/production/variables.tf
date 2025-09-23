@@ -56,11 +56,7 @@ variable "instance_type" {
   default     = "t3.medium" # Larger instances for production
 }
 
-variable "max_size" {
-  description = "Maximum number of instances in Auto Scaling Group"
-  type        = number
-  default     = 6
-}
+# max_size variable removed - not currently used
 
 variable "desired_capacity" {
   description = "Desired number of instances in Auto Scaling Group"
